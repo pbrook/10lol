@@ -1,0 +1,1834 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:0
+EELAYER 27 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date "18 apr 2014"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L RGBLED D1
+U 1 1 5350F376
+P 1500 1100
+F 0 "D1" H 1500 1200 50  0000 C CNN
+F 1 "RGBLED" H 1500 1000 50  0000 C CNN
+F 2 "~" H 1500 1100 60  0000 C CNN
+F 3 "~" H 1500 1100 60  0000 C CNN
+	1    1500 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D2
+U 1 1 5350F385
+P 1500 1900
+F 0 "D2" H 1500 2000 50  0000 C CNN
+F 1 "RGBLED" H 1500 1800 50  0000 C CNN
+F 2 "~" H 1500 1900 60  0000 C CNN
+F 3 "~" H 1500 1900 60  0000 C CNN
+	1    1500 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D3
+U 1 1 5350F394
+P 1500 2700
+F 0 "D3" H 1500 2800 50  0000 C CNN
+F 1 "RGBLED" H 1500 2600 50  0000 C CNN
+F 2 "~" H 1500 2700 60  0000 C CNN
+F 3 "~" H 1500 2700 60  0000 C CNN
+	1    1500 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D4
+U 1 1 5350F3A3
+P 1500 3500
+F 0 "D4" H 1500 3600 50  0000 C CNN
+F 1 "RGBLED" H 1500 3400 50  0000 C CNN
+F 2 "~" H 1500 3500 60  0000 C CNN
+F 3 "~" H 1500 3500 60  0000 C CNN
+	1    1500 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D5
+U 1 1 5350F3B2
+P 1500 4300
+F 0 "D5" H 1500 4400 50  0000 C CNN
+F 1 "RGBLED" H 1500 4200 50  0000 C CNN
+F 2 "~" H 1500 4300 60  0000 C CNN
+F 3 "~" H 1500 4300 60  0000 C CNN
+	1    1500 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D9
+U 1 1 5350F3C1
+P 2400 1100
+F 0 "D9" H 2400 1200 50  0000 C CNN
+F 1 "RGBLED" H 2400 1000 50  0000 C CNN
+F 2 "~" H 2400 1100 60  0000 C CNN
+F 3 "~" H 2400 1100 60  0000 C CNN
+	1    2400 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D10
+U 1 1 5350F3D0
+P 2400 1900
+F 0 "D10" H 2400 2000 50  0000 C CNN
+F 1 "RGBLED" H 2400 1800 50  0000 C CNN
+F 2 "~" H 2400 1900 60  0000 C CNN
+F 3 "~" H 2400 1900 60  0000 C CNN
+	1    2400 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D11
+U 1 1 5350F3DF
+P 2400 2700
+F 0 "D11" H 2400 2800 50  0000 C CNN
+F 1 "RGBLED" H 2400 2600 50  0000 C CNN
+F 2 "~" H 2400 2700 60  0000 C CNN
+F 3 "~" H 2400 2700 60  0000 C CNN
+	1    2400 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 700  1750 4300
+Wire Wire Line
+	1750 4300 1700 4300
+Wire Wire Line
+	1700 2700 1750 2700
+Wire Wire Line
+	1700 3500 1750 3500
+Connection ~ 1750 3500
+Wire Wire Line
+	1750 1900 1700 1900
+Connection ~ 1750 2700
+Wire Wire Line
+	1750 1100 1700 1100
+Connection ~ 1750 1900
+Text Label 1750 700  0    60   ~ 0
+A
+Connection ~ 1750 1100
+Text Label 1200 900  0    60   ~ 0
+B
+Text Label 1200 1100 0    60   ~ 0
+C
+Text Label 1200 1300 0    60   ~ 0
+D
+Text Label 1200 1700 0    60   ~ 0
+E
+Text Label 1200 1900 0    60   ~ 0
+F
+Text Label 1200 2100 0    60   ~ 0
+G
+Text Label 1200 2500 0    60   ~ 0
+H
+Text Label 1200 2700 0    60   ~ 0
+J
+Text Label 1200 2900 0    60   ~ 0
+K
+Text Label 1200 3300 0    60   ~ 0
+M
+Text Label 1200 3500 0    60   ~ 0
+N
+Text Label 1200 3700 0    60   ~ 0
+P
+Text Label 1200 4100 0    60   ~ 0
+Q
+Text Label 1200 4300 0    60   ~ 0
+R
+Text Label 1200 4500 0    60   ~ 0
+S
+Text Label 2650 700  0    60   ~ 0
+B
+Text Label 2100 900  0    60   ~ 0
+A
+Text Label 2100 1100 0    60   ~ 0
+C
+Text Label 2100 1300 0    60   ~ 0
+D
+Text Label 2100 1700 0    60   ~ 0
+E
+Text Label 2100 1900 0    60   ~ 0
+F
+Text Label 2100 2100 0    60   ~ 0
+G
+Text Label 2100 2500 0    60   ~ 0
+H
+Text Label 2100 2700 0    60   ~ 0
+J
+Text Label 2100 2900 0    60   ~ 0
+K
+Wire Wire Line
+	2600 2700 2650 2700
+Wire Wire Line
+	2650 700  2650 4300
+Wire Wire Line
+	2600 1100 2650 1100
+Connection ~ 2650 1100
+Wire Wire Line
+	2600 1900 2650 1900
+Connection ~ 2650 1900
+Wire Wire Line
+	2100 900  2200 900 
+Wire Wire Line
+	2100 1100 2200 1100
+Wire Wire Line
+	2100 1300 2200 1300
+Wire Wire Line
+	2100 1700 2200 1700
+Wire Wire Line
+	2100 1900 2200 1900
+Wire Wire Line
+	2100 2100 2200 2100
+Wire Wire Line
+	2100 2500 2200 2500
+Wire Wire Line
+	2100 2700 2200 2700
+Wire Wire Line
+	2200 2900 2100 2900
+Wire Wire Line
+	1200 900  1300 900 
+Wire Wire Line
+	1200 1100 1300 1100
+Wire Wire Line
+	1200 1300 1300 1300
+Wire Wire Line
+	1200 1700 1300 1700
+Wire Wire Line
+	1200 1900 1300 1900
+Wire Wire Line
+	1200 2100 1300 2100
+Wire Wire Line
+	1200 2500 1300 2500
+Wire Wire Line
+	1200 2700 1300 2700
+Wire Wire Line
+	1200 2900 1300 2900
+Wire Wire Line
+	1200 3300 1300 3300
+Wire Wire Line
+	1200 3500 1300 3500
+Wire Wire Line
+	1200 3700 1300 3700
+Wire Wire Line
+	1200 4100 1300 4100
+Wire Wire Line
+	1200 4300 1300 4300
+Wire Wire Line
+	1200 4500 1300 4500
+$Comp
+L RGBLED D12
+U 1 1 5350F75A
+P 2400 3500
+F 0 "D12" H 2400 3600 50  0000 C CNN
+F 1 "RGBLED" H 2400 3400 50  0000 C CNN
+F 2 "~" H 2400 3500 60  0000 C CNN
+F 3 "~" H 2400 3500 60  0000 C CNN
+	1    2400 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D13
+U 1 1 5350F769
+P 2400 4300
+F 0 "D13" H 2400 4400 50  0000 C CNN
+F 1 "RGBLED" H 2400 4200 50  0000 C CNN
+F 2 "~" H 2400 4300 60  0000 C CNN
+F 3 "~" H 2400 4300 60  0000 C CNN
+	1    2400 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2650 3500 2600 3500
+Connection ~ 2650 2700
+Wire Wire Line
+	2650 4300 2600 4300
+Connection ~ 2650 3500
+Text Label 2100 3300 0    60   ~ 0
+M
+Text Label 2100 3500 0    60   ~ 0
+N
+Text Label 2100 3700 0    60   ~ 0
+P
+Text Label 2100 4100 0    60   ~ 0
+Q
+Text Label 2100 4300 0    60   ~ 0
+R
+Text Label 2100 4500 0    60   ~ 0
+S
+Wire Wire Line
+	2100 3300 2200 3300
+Wire Wire Line
+	2200 3500 2100 3500
+Wire Wire Line
+	2100 3700 2200 3700
+Wire Wire Line
+	2200 4100 2100 4100
+Wire Wire Line
+	2100 4300 2200 4300
+Wire Wire Line
+	2200 4500 2100 4500
+$Comp
+L RGBLED D17
+U 1 1 5350F8E7
+P 3200 1100
+F 0 "D17" H 3200 1200 50  0000 C CNN
+F 1 "RGBLED" H 3200 1000 50  0000 C CNN
+F 2 "~" H 3200 1100 60  0000 C CNN
+F 3 "~" H 3200 1100 60  0000 C CNN
+	1    3200 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D18
+U 1 1 5350F8ED
+P 3200 1900
+F 0 "D18" H 3200 2000 50  0000 C CNN
+F 1 "RGBLED" H 3200 1800 50  0000 C CNN
+F 2 "~" H 3200 1900 60  0000 C CNN
+F 3 "~" H 3200 1900 60  0000 C CNN
+	1    3200 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D19
+U 1 1 5350F8F3
+P 3200 2700
+F 0 "D19" H 3200 2800 50  0000 C CNN
+F 1 "RGBLED" H 3200 2600 50  0000 C CNN
+F 2 "~" H 3200 2700 60  0000 C CNN
+F 3 "~" H 3200 2700 60  0000 C CNN
+	1    3200 2700
+	1    0    0    -1  
+$EndComp
+Text Label 3450 700  0    60   ~ 0
+C
+Text Label 2900 900  0    60   ~ 0
+A
+Text Label 2900 1100 0    60   ~ 0
+B
+Text Label 2900 1300 0    60   ~ 0
+D
+Text Label 2900 1700 0    60   ~ 0
+E
+Text Label 2900 1900 0    60   ~ 0
+F
+Text Label 2900 2100 0    60   ~ 0
+G
+Text Label 2900 2500 0    60   ~ 0
+H
+Text Label 2900 2700 0    60   ~ 0
+J
+Text Label 2900 2900 0    60   ~ 0
+K
+Wire Wire Line
+	3400 2700 3450 2700
+Wire Wire Line
+	3450 700  3450 4300
+Wire Wire Line
+	3400 1100 3450 1100
+Connection ~ 3450 1100
+Wire Wire Line
+	3400 1900 3450 1900
+Connection ~ 3450 1900
+Wire Wire Line
+	2900 900  3000 900 
+Wire Wire Line
+	2900 1100 3000 1100
+Wire Wire Line
+	2900 1300 3000 1300
+Wire Wire Line
+	2900 1700 3000 1700
+Wire Wire Line
+	2900 1900 3000 1900
+Wire Wire Line
+	2900 2100 3000 2100
+Wire Wire Line
+	2900 2500 3000 2500
+Wire Wire Line
+	2900 2700 3000 2700
+Wire Wire Line
+	3000 2900 2900 2900
+$Comp
+L RGBLED D20
+U 1 1 5350F912
+P 3200 3500
+F 0 "D20" H 3200 3600 50  0000 C CNN
+F 1 "RGBLED" H 3200 3400 50  0000 C CNN
+F 2 "~" H 3200 3500 60  0000 C CNN
+F 3 "~" H 3200 3500 60  0000 C CNN
+	1    3200 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D21
+U 1 1 5350F918
+P 3200 4300
+F 0 "D21" H 3200 4400 50  0000 C CNN
+F 1 "RGBLED" H 3200 4200 50  0000 C CNN
+F 2 "~" H 3200 4300 60  0000 C CNN
+F 3 "~" H 3200 4300 60  0000 C CNN
+	1    3200 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3450 3500 3400 3500
+Connection ~ 3450 2700
+Wire Wire Line
+	3450 4300 3400 4300
+Connection ~ 3450 3500
+Text Label 2900 3300 0    60   ~ 0
+M
+Text Label 2900 3500 0    60   ~ 0
+N
+Text Label 2900 3700 0    60   ~ 0
+P
+Text Label 2900 4100 0    60   ~ 0
+Q
+Text Label 2900 4300 0    60   ~ 0
+R
+Text Label 2900 4500 0    60   ~ 0
+S
+Wire Wire Line
+	2900 3300 3000 3300
+Wire Wire Line
+	3000 3500 2900 3500
+Wire Wire Line
+	2900 3700 3000 3700
+Wire Wire Line
+	3000 4100 2900 4100
+Wire Wire Line
+	2900 4300 3000 4300
+Wire Wire Line
+	3000 4500 2900 4500
+$Comp
+L RGBLED D25
+U 1 1 5350F951
+P 4000 1100
+F 0 "D25" H 4000 1200 50  0000 C CNN
+F 1 "RGBLED" H 4000 1000 50  0000 C CNN
+F 2 "~" H 4000 1100 60  0000 C CNN
+F 3 "~" H 4000 1100 60  0000 C CNN
+	1    4000 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D26
+U 1 1 5350F957
+P 4000 1900
+F 0 "D26" H 4000 2000 50  0000 C CNN
+F 1 "RGBLED" H 4000 1800 50  0000 C CNN
+F 2 "~" H 4000 1900 60  0000 C CNN
+F 3 "~" H 4000 1900 60  0000 C CNN
+	1    4000 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D27
+U 1 1 5350F95D
+P 4000 2700
+F 0 "D27" H 4000 2800 50  0000 C CNN
+F 1 "RGBLED" H 4000 2600 50  0000 C CNN
+F 2 "~" H 4000 2700 60  0000 C CNN
+F 3 "~" H 4000 2700 60  0000 C CNN
+	1    4000 2700
+	1    0    0    -1  
+$EndComp
+Text Label 4250 700  0    60   ~ 0
+D
+Text Label 3700 900  0    60   ~ 0
+A
+Text Label 3700 1100 0    60   ~ 0
+B
+Text Label 3700 1300 0    60   ~ 0
+C
+Text Label 3700 1700 0    60   ~ 0
+E
+Text Label 3700 1900 0    60   ~ 0
+F
+Text Label 3700 2100 0    60   ~ 0
+G
+Text Label 3700 2500 0    60   ~ 0
+H
+Text Label 3700 2700 0    60   ~ 0
+J
+Text Label 3700 2900 0    60   ~ 0
+K
+Wire Wire Line
+	4200 2700 4250 2700
+Wire Wire Line
+	4250 700  4250 4300
+Wire Wire Line
+	4200 1100 4250 1100
+Connection ~ 4250 1100
+Wire Wire Line
+	4200 1900 4250 1900
+Connection ~ 4250 1900
+Wire Wire Line
+	3700 900  3800 900 
+Wire Wire Line
+	3700 1100 3800 1100
+Wire Wire Line
+	3700 1300 3800 1300
+Wire Wire Line
+	3700 1700 3800 1700
+Wire Wire Line
+	3700 1900 3800 1900
+Wire Wire Line
+	3700 2100 3800 2100
+Wire Wire Line
+	3700 2500 3800 2500
+Wire Wire Line
+	3700 2700 3800 2700
+Wire Wire Line
+	3800 2900 3700 2900
+$Comp
+L RGBLED D28
+U 1 1 5350F97C
+P 4000 3500
+F 0 "D28" H 4000 3600 50  0000 C CNN
+F 1 "RGBLED" H 4000 3400 50  0000 C CNN
+F 2 "~" H 4000 3500 60  0000 C CNN
+F 3 "~" H 4000 3500 60  0000 C CNN
+	1    4000 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D29
+U 1 1 5350F982
+P 4000 4300
+F 0 "D29" H 4000 4400 50  0000 C CNN
+F 1 "RGBLED" H 4000 4200 50  0000 C CNN
+F 2 "~" H 4000 4300 60  0000 C CNN
+F 3 "~" H 4000 4300 60  0000 C CNN
+	1    4000 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4250 3500 4200 3500
+Connection ~ 4250 2700
+Wire Wire Line
+	4250 4300 4200 4300
+Connection ~ 4250 3500
+Text Label 3700 3300 0    60   ~ 0
+M
+Text Label 3700 3500 0    60   ~ 0
+N
+Text Label 3700 3700 0    60   ~ 0
+P
+Text Label 3700 4100 0    60   ~ 0
+Q
+Text Label 3700 4300 0    60   ~ 0
+R
+Text Label 3700 4500 0    60   ~ 0
+S
+Wire Wire Line
+	3700 3300 3800 3300
+Wire Wire Line
+	3800 3500 3700 3500
+Wire Wire Line
+	3700 3700 3800 3700
+Wire Wire Line
+	3800 4100 3700 4100
+Wire Wire Line
+	3700 4300 3800 4300
+Wire Wire Line
+	3800 4500 3700 4500
+$Comp
+L RGBLED D33
+U 1 1 5350F998
+P 4800 1100
+F 0 "D33" H 4800 1200 50  0000 C CNN
+F 1 "RGBLED" H 4800 1000 50  0000 C CNN
+F 2 "~" H 4800 1100 60  0000 C CNN
+F 3 "~" H 4800 1100 60  0000 C CNN
+	1    4800 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D34
+U 1 1 5350F99E
+P 4800 1900
+F 0 "D34" H 4800 2000 50  0000 C CNN
+F 1 "RGBLED" H 4800 1800 50  0000 C CNN
+F 2 "~" H 4800 1900 60  0000 C CNN
+F 3 "~" H 4800 1900 60  0000 C CNN
+	1    4800 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D35
+U 1 1 5350F9A4
+P 4800 2700
+F 0 "D35" H 4800 2800 50  0000 C CNN
+F 1 "RGBLED" H 4800 2600 50  0000 C CNN
+F 2 "~" H 4800 2700 60  0000 C CNN
+F 3 "~" H 4800 2700 60  0000 C CNN
+	1    4800 2700
+	1    0    0    -1  
+$EndComp
+Text Label 5050 700  0    60   ~ 0
+E
+Text Label 4500 900  0    60   ~ 0
+A
+Text Label 4500 1100 0    60   ~ 0
+B
+Text Label 4500 1300 0    60   ~ 0
+C
+Text Label 4500 1700 0    60   ~ 0
+D
+Text Label 4500 1900 0    60   ~ 0
+F
+Text Label 4500 2100 0    60   ~ 0
+G
+Text Label 4500 2500 0    60   ~ 0
+H
+Text Label 4500 2700 0    60   ~ 0
+J
+Text Label 4500 2900 0    60   ~ 0
+K
+Wire Wire Line
+	5000 2700 5050 2700
+Wire Wire Line
+	5050 700  5050 4300
+Wire Wire Line
+	5000 1100 5050 1100
+Connection ~ 5050 1100
+Wire Wire Line
+	5000 1900 5050 1900
+Connection ~ 5050 1900
+Wire Wire Line
+	4500 900  4600 900 
+Wire Wire Line
+	4500 1100 4600 1100
+Wire Wire Line
+	4500 1300 4600 1300
+Wire Wire Line
+	4500 1700 4600 1700
+Wire Wire Line
+	4500 1900 4600 1900
+Wire Wire Line
+	4500 2100 4600 2100
+Wire Wire Line
+	4500 2500 4600 2500
+Wire Wire Line
+	4500 2700 4600 2700
+Wire Wire Line
+	4600 2900 4500 2900
+$Comp
+L RGBLED D36
+U 1 1 5350F9C3
+P 4800 3500
+F 0 "D36" H 4800 3600 50  0000 C CNN
+F 1 "RGBLED" H 4800 3400 50  0000 C CNN
+F 2 "~" H 4800 3500 60  0000 C CNN
+F 3 "~" H 4800 3500 60  0000 C CNN
+	1    4800 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D37
+U 1 1 5350F9C9
+P 4800 4300
+F 0 "D37" H 4800 4400 50  0000 C CNN
+F 1 "RGBLED" H 4800 4200 50  0000 C CNN
+F 2 "~" H 4800 4300 60  0000 C CNN
+F 3 "~" H 4800 4300 60  0000 C CNN
+	1    4800 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5050 3500 5000 3500
+Connection ~ 5050 2700
+Wire Wire Line
+	5050 4300 5000 4300
+Connection ~ 5050 3500
+Text Label 4500 3300 0    60   ~ 0
+M
+Text Label 4500 3500 0    60   ~ 0
+N
+Text Label 4500 3700 0    60   ~ 0
+P
+Text Label 4500 4100 0    60   ~ 0
+Q
+Text Label 4500 4300 0    60   ~ 0
+R
+Text Label 4500 4500 0    60   ~ 0
+S
+Wire Wire Line
+	4500 3300 4600 3300
+Wire Wire Line
+	4600 3500 4500 3500
+Wire Wire Line
+	4500 3700 4600 3700
+Wire Wire Line
+	4600 4100 4500 4100
+Wire Wire Line
+	4500 4300 4600 4300
+Wire Wire Line
+	4600 4500 4500 4500
+$Comp
+L RGBLED D41
+U 1 1 5350F9DF
+P 5600 1100
+F 0 "D41" H 5600 1200 50  0000 C CNN
+F 1 "RGBLED" H 5600 1000 50  0000 C CNN
+F 2 "~" H 5600 1100 60  0000 C CNN
+F 3 "~" H 5600 1100 60  0000 C CNN
+	1    5600 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D42
+U 1 1 5350F9E5
+P 5600 1900
+F 0 "D42" H 5600 2000 50  0000 C CNN
+F 1 "RGBLED" H 5600 1800 50  0000 C CNN
+F 2 "~" H 5600 1900 60  0000 C CNN
+F 3 "~" H 5600 1900 60  0000 C CNN
+	1    5600 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D43
+U 1 1 5350F9EB
+P 5600 2700
+F 0 "D43" H 5600 2800 50  0000 C CNN
+F 1 "RGBLED" H 5600 2600 50  0000 C CNN
+F 2 "~" H 5600 2700 60  0000 C CNN
+F 3 "~" H 5600 2700 60  0000 C CNN
+	1    5600 2700
+	1    0    0    -1  
+$EndComp
+Text Label 5850 700  0    60   ~ 0
+F
+Text Label 5300 900  0    60   ~ 0
+A
+Text Label 5300 1100 0    60   ~ 0
+B
+Text Label 5300 1300 0    60   ~ 0
+C
+Text Label 5300 1700 0    60   ~ 0
+D
+Text Label 5300 1900 0    60   ~ 0
+E
+Text Label 5300 2100 0    60   ~ 0
+G
+Text Label 5300 2500 0    60   ~ 0
+H
+Text Label 5300 2700 0    60   ~ 0
+J
+Text Label 5300 2900 0    60   ~ 0
+K
+Wire Wire Line
+	5800 2700 5850 2700
+Wire Wire Line
+	5850 700  5850 4300
+Wire Wire Line
+	5800 1100 5850 1100
+Connection ~ 5850 1100
+Wire Wire Line
+	5800 1900 5850 1900
+Connection ~ 5850 1900
+Wire Wire Line
+	5300 900  5400 900 
+Wire Wire Line
+	5300 1100 5400 1100
+Wire Wire Line
+	5300 1300 5400 1300
+Wire Wire Line
+	5300 1700 5400 1700
+Wire Wire Line
+	5300 1900 5400 1900
+Wire Wire Line
+	5300 2100 5400 2100
+Wire Wire Line
+	5300 2500 5400 2500
+Wire Wire Line
+	5300 2700 5400 2700
+Wire Wire Line
+	5400 2900 5300 2900
+$Comp
+L RGBLED D44
+U 1 1 5350FA0A
+P 5600 3500
+F 0 "D44" H 5600 3600 50  0000 C CNN
+F 1 "RGBLED" H 5600 3400 50  0000 C CNN
+F 2 "~" H 5600 3500 60  0000 C CNN
+F 3 "~" H 5600 3500 60  0000 C CNN
+	1    5600 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D45
+U 1 1 5350FA10
+P 5600 4300
+F 0 "D45" H 5600 4400 50  0000 C CNN
+F 1 "RGBLED" H 5600 4200 50  0000 C CNN
+F 2 "~" H 5600 4300 60  0000 C CNN
+F 3 "~" H 5600 4300 60  0000 C CNN
+	1    5600 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5850 3500 5800 3500
+Connection ~ 5850 2700
+Wire Wire Line
+	5850 4300 5800 4300
+Connection ~ 5850 3500
+Text Label 5300 3300 0    60   ~ 0
+M
+Text Label 5300 3500 0    60   ~ 0
+N
+Text Label 5300 3700 0    60   ~ 0
+P
+Text Label 5300 4100 0    60   ~ 0
+Q
+Text Label 5300 4300 0    60   ~ 0
+R
+Text Label 5300 4500 0    60   ~ 0
+S
+Wire Wire Line
+	5300 3300 5400 3300
+Wire Wire Line
+	5400 3500 5300 3500
+Wire Wire Line
+	5300 3700 5400 3700
+Wire Wire Line
+	5400 4100 5300 4100
+Wire Wire Line
+	5300 4300 5400 4300
+Wire Wire Line
+	5400 4500 5300 4500
+$Comp
+L RGBLED D57
+U 1 1 5350FA26
+P 7200 1100
+F 0 "D57" H 7200 1200 50  0000 C CNN
+F 1 "RGBLED" H 7200 1000 50  0000 C CNN
+F 2 "~" H 7200 1100 60  0000 C CNN
+F 3 "~" H 7200 1100 60  0000 C CNN
+	1    7200 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D58
+U 1 1 5350FA2C
+P 7200 1900
+F 0 "D58" H 7200 2000 50  0000 C CNN
+F 1 "RGBLED" H 7200 1800 50  0000 C CNN
+F 2 "~" H 7200 1900 60  0000 C CNN
+F 3 "~" H 7200 1900 60  0000 C CNN
+	1    7200 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D59
+U 1 1 5350FA32
+P 7200 2700
+F 0 "D59" H 7200 2800 50  0000 C CNN
+F 1 "RGBLED" H 7200 2600 50  0000 C CNN
+F 2 "~" H 7200 2700 60  0000 C CNN
+F 3 "~" H 7200 2700 60  0000 C CNN
+	1    7200 2700
+	1    0    0    -1  
+$EndComp
+Text Label 7450 700  0    60   ~ 0
+H
+Text Label 6900 900  0    60   ~ 0
+A
+Text Label 6900 1100 0    60   ~ 0
+B
+Text Label 6900 1300 0    60   ~ 0
+C
+Text Label 6900 1700 0    60   ~ 0
+D
+Text Label 6900 1900 0    60   ~ 0
+E
+Text Label 6900 2100 0    60   ~ 0
+F
+Text Label 6900 2500 0    60   ~ 0
+G
+Text Label 6900 2700 0    60   ~ 0
+J
+Text Label 6900 2900 0    60   ~ 0
+K
+Wire Wire Line
+	7400 2700 7450 2700
+Wire Wire Line
+	7450 700  7450 4300
+Wire Wire Line
+	7400 1100 7450 1100
+Connection ~ 7450 1100
+Wire Wire Line
+	7400 1900 7450 1900
+Connection ~ 7450 1900
+Wire Wire Line
+	6900 900  7000 900 
+Wire Wire Line
+	6900 1100 7000 1100
+Wire Wire Line
+	6900 1300 7000 1300
+Wire Wire Line
+	6900 1700 7000 1700
+Wire Wire Line
+	6900 1900 7000 1900
+Wire Wire Line
+	6900 2100 7000 2100
+Wire Wire Line
+	6900 2500 7000 2500
+Wire Wire Line
+	6900 2700 7000 2700
+Wire Wire Line
+	7000 2900 6900 2900
+$Comp
+L RGBLED D60
+U 1 1 5350FA51
+P 7200 3500
+F 0 "D60" H 7200 3600 50  0000 C CNN
+F 1 "RGBLED" H 7200 3400 50  0000 C CNN
+F 2 "~" H 7200 3500 60  0000 C CNN
+F 3 "~" H 7200 3500 60  0000 C CNN
+	1    7200 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D61
+U 1 1 5350FA57
+P 7200 4300
+F 0 "D61" H 7200 4400 50  0000 C CNN
+F 1 "RGBLED" H 7200 4200 50  0000 C CNN
+F 2 "~" H 7200 4300 60  0000 C CNN
+F 3 "~" H 7200 4300 60  0000 C CNN
+	1    7200 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7450 3500 7400 3500
+Connection ~ 7450 2700
+Wire Wire Line
+	7450 4300 7400 4300
+Connection ~ 7450 3500
+Text Label 6900 3300 0    60   ~ 0
+M
+Text Label 6900 3500 0    60   ~ 0
+N
+Text Label 6900 3700 0    60   ~ 0
+P
+Text Label 6900 4100 0    60   ~ 0
+Q
+Text Label 6900 4300 0    60   ~ 0
+R
+Text Label 6900 4500 0    60   ~ 0
+S
+Wire Wire Line
+	6900 3300 7000 3300
+Wire Wire Line
+	7000 3500 6900 3500
+Wire Wire Line
+	6900 3700 7000 3700
+Wire Wire Line
+	7000 4100 6900 4100
+Wire Wire Line
+	6900 4300 7000 4300
+Wire Wire Line
+	7000 4500 6900 4500
+$Comp
+L RGBLED D49
+U 1 1 5350FA7B
+P 6400 1100
+F 0 "D49" H 6400 1200 50  0000 C CNN
+F 1 "RGBLED" H 6400 1000 50  0000 C CNN
+F 2 "~" H 6400 1100 60  0000 C CNN
+F 3 "~" H 6400 1100 60  0000 C CNN
+	1    6400 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D50
+U 1 1 5350FA81
+P 6400 1900
+F 0 "D50" H 6400 2000 50  0000 C CNN
+F 1 "RGBLED" H 6400 1800 50  0000 C CNN
+F 2 "~" H 6400 1900 60  0000 C CNN
+F 3 "~" H 6400 1900 60  0000 C CNN
+	1    6400 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D51
+U 1 1 5350FA87
+P 6400 2700
+F 0 "D51" H 6400 2800 50  0000 C CNN
+F 1 "RGBLED" H 6400 2600 50  0000 C CNN
+F 2 "~" H 6400 2700 60  0000 C CNN
+F 3 "~" H 6400 2700 60  0000 C CNN
+	1    6400 2700
+	1    0    0    -1  
+$EndComp
+Text Label 6650 700  0    60   ~ 0
+G
+Text Label 6100 900  0    60   ~ 0
+A
+Text Label 6100 1100 0    60   ~ 0
+B
+Text Label 6100 1300 0    60   ~ 0
+C
+Text Label 6100 1700 0    60   ~ 0
+D
+Text Label 6100 1900 0    60   ~ 0
+E
+Text Label 6100 2100 0    60   ~ 0
+F
+Text Label 6100 2500 0    60   ~ 0
+H
+Text Label 6100 2700 0    60   ~ 0
+J
+Text Label 6100 2900 0    60   ~ 0
+K
+Wire Wire Line
+	6600 2700 6650 2700
+Wire Wire Line
+	6650 700  6650 4300
+Wire Wire Line
+	6600 1100 6650 1100
+Connection ~ 6650 1100
+Wire Wire Line
+	6600 1900 6650 1900
+Connection ~ 6650 1900
+Wire Wire Line
+	6100 900  6200 900 
+Wire Wire Line
+	6100 1100 6200 1100
+Wire Wire Line
+	6100 1300 6200 1300
+Wire Wire Line
+	6100 1700 6200 1700
+Wire Wire Line
+	6100 1900 6200 1900
+Wire Wire Line
+	6100 2100 6200 2100
+Wire Wire Line
+	6100 2500 6200 2500
+Wire Wire Line
+	6100 2700 6200 2700
+Wire Wire Line
+	6200 2900 6100 2900
+$Comp
+L RGBLED D52
+U 1 1 5350FAA6
+P 6400 3500
+F 0 "D52" H 6400 3600 50  0000 C CNN
+F 1 "RGBLED" H 6400 3400 50  0000 C CNN
+F 2 "~" H 6400 3500 60  0000 C CNN
+F 3 "~" H 6400 3500 60  0000 C CNN
+	1    6400 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D53
+U 1 1 5350FAAC
+P 6400 4300
+F 0 "D53" H 6400 4400 50  0000 C CNN
+F 1 "RGBLED" H 6400 4200 50  0000 C CNN
+F 2 "~" H 6400 4300 60  0000 C CNN
+F 3 "~" H 6400 4300 60  0000 C CNN
+	1    6400 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6650 3500 6600 3500
+Connection ~ 6650 2700
+Wire Wire Line
+	6650 4300 6600 4300
+Connection ~ 6650 3500
+Text Label 6100 3300 0    60   ~ 0
+M
+Text Label 6100 3500 0    60   ~ 0
+N
+Text Label 6100 3700 0    60   ~ 0
+P
+Text Label 6100 4100 0    60   ~ 0
+Q
+Text Label 6100 4300 0    60   ~ 0
+R
+Text Label 6100 4500 0    60   ~ 0
+S
+Wire Wire Line
+	6100 3300 6200 3300
+Wire Wire Line
+	6200 3500 6100 3500
+Wire Wire Line
+	6100 3700 6200 3700
+Wire Wire Line
+	6200 4100 6100 4100
+Wire Wire Line
+	6100 4300 6200 4300
+Wire Wire Line
+	6200 4500 6100 4500
+$Comp
+L RGBLED D6
+U 1 1 5350FD96
+P 1550 5200
+F 0 "D6" H 1550 5300 50  0000 C CNN
+F 1 "RGBLED" H 1550 5100 50  0000 C CNN
+F 2 "~" H 1550 5200 60  0000 C CNN
+F 3 "~" H 1550 5200 60  0000 C CNN
+	1    1550 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D7
+U 1 1 5350FD9C
+P 1550 6000
+F 0 "D7" H 1550 6100 50  0000 C CNN
+F 1 "RGBLED" H 1550 5900 50  0000 C CNN
+F 2 "~" H 1550 6000 60  0000 C CNN
+F 3 "~" H 1550 6000 60  0000 C CNN
+	1    1550 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D8
+U 1 1 5350FDA2
+P 1550 6800
+F 0 "D8" H 1550 6900 50  0000 C CNN
+F 1 "RGBLED" H 1550 6700 50  0000 C CNN
+F 2 "~" H 1550 6800 60  0000 C CNN
+F 3 "~" H 1550 6800 60  0000 C CNN
+	1    1550 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 6800 1750 6800
+Wire Wire Line
+	1750 5200 1800 5200
+Wire Wire Line
+	1800 6000 1750 6000
+Connection ~ 1800 6000
+Connection ~ 1800 5200
+Text Label 1800 4800 0    60   ~ 0
+J
+Text Label 1250 5000 0    60   ~ 0
+G
+Text Label 1250 5200 0    60   ~ 0
+H
+Text Label 1250 5400 0    60   ~ 0
+K
+Text Label 1250 5800 0    60   ~ 0
+M
+Text Label 1250 6000 0    60   ~ 0
+N
+Text Label 1250 6200 0    60   ~ 0
+P
+Text Label 1250 6600 0    60   ~ 0
+Q
+Text Label 1250 6800 0    60   ~ 0
+R
+Text Label 1250 7000 0    60   ~ 0
+S
+Wire Wire Line
+	1250 5000 1350 5000
+Wire Wire Line
+	1250 5200 1350 5200
+Wire Wire Line
+	1250 5400 1350 5400
+Wire Wire Line
+	1250 5800 1350 5800
+Wire Wire Line
+	1250 6000 1350 6000
+Wire Wire Line
+	1250 6200 1350 6200
+Wire Wire Line
+	1250 6600 1350 6600
+Wire Wire Line
+	1250 6800 1350 6800
+Wire Wire Line
+	1250 7000 1350 7000
+Wire Wire Line
+	1800 4800 1800 6800
+$Comp
+L RGBLED D14
+U 1 1 5350FDC3
+P 2400 5200
+F 0 "D14" H 2400 5300 50  0000 C CNN
+F 1 "RGBLED" H 2400 5100 50  0000 C CNN
+F 2 "~" H 2400 5200 60  0000 C CNN
+F 3 "~" H 2400 5200 60  0000 C CNN
+	1    2400 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D15
+U 1 1 5350FDC9
+P 2400 6000
+F 0 "D15" H 2400 6100 50  0000 C CNN
+F 1 "RGBLED" H 2400 5900 50  0000 C CNN
+F 2 "~" H 2400 6000 60  0000 C CNN
+F 3 "~" H 2400 6000 60  0000 C CNN
+	1    2400 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D16
+U 1 1 5350FDCF
+P 2400 6800
+F 0 "D16" H 2400 6900 50  0000 C CNN
+F 1 "RGBLED" H 2400 6700 50  0000 C CNN
+F 2 "~" H 2400 6800 60  0000 C CNN
+F 3 "~" H 2400 6800 60  0000 C CNN
+	1    2400 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2650 6800 2600 6800
+Wire Wire Line
+	2600 5200 2650 5200
+Wire Wire Line
+	2650 6000 2600 6000
+Connection ~ 2650 6000
+Connection ~ 2650 5200
+Text Label 2650 4800 0    60   ~ 0
+K
+Text Label 2100 5000 0    60   ~ 0
+G
+Text Label 2100 5200 0    60   ~ 0
+H
+Text Label 2100 5400 0    60   ~ 0
+J
+Text Label 2100 5800 0    60   ~ 0
+M
+Text Label 2100 6000 0    60   ~ 0
+N
+Text Label 2100 6200 0    60   ~ 0
+P
+Text Label 2100 6600 0    60   ~ 0
+Q
+Text Label 2100 6800 0    60   ~ 0
+R
+Text Label 2100 7000 0    60   ~ 0
+S
+Wire Wire Line
+	2100 5000 2200 5000
+Wire Wire Line
+	2100 5200 2200 5200
+Wire Wire Line
+	2100 5400 2200 5400
+Wire Wire Line
+	2100 5800 2200 5800
+Wire Wire Line
+	2100 6000 2200 6000
+Wire Wire Line
+	2100 6200 2200 6200
+Wire Wire Line
+	2100 6600 2200 6600
+Wire Wire Line
+	2100 6800 2200 6800
+Wire Wire Line
+	2100 7000 2200 7000
+Wire Wire Line
+	2650 4800 2650 6800
+$Comp
+L RGBLED D22
+U 1 1 5350FDF1
+P 3200 5200
+F 0 "D22" H 3200 5300 50  0000 C CNN
+F 1 "RGBLED" H 3200 5100 50  0000 C CNN
+F 2 "~" H 3200 5200 60  0000 C CNN
+F 3 "~" H 3200 5200 60  0000 C CNN
+	1    3200 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D23
+U 1 1 5350FDF7
+P 3200 6000
+F 0 "D23" H 3200 6100 50  0000 C CNN
+F 1 "RGBLED" H 3200 5900 50  0000 C CNN
+F 2 "~" H 3200 6000 60  0000 C CNN
+F 3 "~" H 3200 6000 60  0000 C CNN
+	1    3200 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D24
+U 1 1 5350FDFD
+P 3200 6800
+F 0 "D24" H 3200 6900 50  0000 C CNN
+F 1 "RGBLED" H 3200 6700 50  0000 C CNN
+F 2 "~" H 3200 6800 60  0000 C CNN
+F 3 "~" H 3200 6800 60  0000 C CNN
+	1    3200 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3450 6800 3400 6800
+Wire Wire Line
+	3400 5200 3450 5200
+Wire Wire Line
+	3450 6000 3400 6000
+Connection ~ 3450 6000
+Connection ~ 3450 5200
+Text Label 3450 4800 0    60   ~ 0
+M
+Text Label 2900 5000 0    60   ~ 0
+G
+Text Label 2900 5200 0    60   ~ 0
+H
+Text Label 2900 5400 0    60   ~ 0
+J
+Text Label 2900 5800 0    60   ~ 0
+K
+Text Label 2900 6000 0    60   ~ 0
+N
+Text Label 2900 6200 0    60   ~ 0
+P
+Text Label 2900 6600 0    60   ~ 0
+Q
+Text Label 2900 6800 0    60   ~ 0
+R
+Text Label 2900 7000 0    60   ~ 0
+S
+Wire Wire Line
+	2900 5000 3000 5000
+Wire Wire Line
+	2900 5200 3000 5200
+Wire Wire Line
+	2900 5400 3000 5400
+Wire Wire Line
+	2900 5800 3000 5800
+Wire Wire Line
+	2900 6000 3000 6000
+Wire Wire Line
+	2900 6200 3000 6200
+Wire Wire Line
+	2900 6600 3000 6600
+Wire Wire Line
+	2900 6800 3000 6800
+Wire Wire Line
+	2900 7000 3000 7000
+Wire Wire Line
+	3450 4800 3450 6800
+$Comp
+L RGBLED D30
+U 1 1 5350FE1E
+P 4000 5200
+F 0 "D30" H 4000 5300 50  0000 C CNN
+F 1 "RGBLED" H 4000 5100 50  0000 C CNN
+F 2 "~" H 4000 5200 60  0000 C CNN
+F 3 "~" H 4000 5200 60  0000 C CNN
+	1    4000 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D31
+U 1 1 5350FE24
+P 4000 6000
+F 0 "D31" H 4000 6100 50  0000 C CNN
+F 1 "RGBLED" H 4000 5900 50  0000 C CNN
+F 2 "~" H 4000 6000 60  0000 C CNN
+F 3 "~" H 4000 6000 60  0000 C CNN
+	1    4000 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D32
+U 1 1 5350FE2A
+P 4000 6800
+F 0 "D32" H 4000 6900 50  0000 C CNN
+F 1 "RGBLED" H 4000 6700 50  0000 C CNN
+F 2 "~" H 4000 6800 60  0000 C CNN
+F 3 "~" H 4000 6800 60  0000 C CNN
+	1    4000 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4250 6800 4200 6800
+Wire Wire Line
+	4200 5200 4250 5200
+Wire Wire Line
+	4250 6000 4200 6000
+Connection ~ 4250 6000
+Connection ~ 4250 5200
+Text Label 4250 4800 0    60   ~ 0
+N
+Text Label 3700 5000 0    60   ~ 0
+G
+Text Label 3700 5200 0    60   ~ 0
+H
+Text Label 3700 5400 0    60   ~ 0
+J
+Text Label 3700 5800 0    60   ~ 0
+K
+Text Label 3700 6000 0    60   ~ 0
+M
+Text Label 3700 6200 0    60   ~ 0
+P
+Text Label 3700 6600 0    60   ~ 0
+Q
+Text Label 3700 6800 0    60   ~ 0
+R
+Text Label 3700 7000 0    60   ~ 0
+S
+Wire Wire Line
+	3700 5000 3800 5000
+Wire Wire Line
+	3700 5200 3800 5200
+Wire Wire Line
+	3700 5400 3800 5400
+Wire Wire Line
+	3700 5800 3800 5800
+Wire Wire Line
+	3700 6000 3800 6000
+Wire Wire Line
+	3700 6200 3800 6200
+Wire Wire Line
+	3700 6600 3800 6600
+Wire Wire Line
+	3700 6800 3800 6800
+Wire Wire Line
+	3700 7000 3800 7000
+Wire Wire Line
+	4250 4800 4250 6800
+$Comp
+L RGBLED D38
+U 1 1 5350FE4B
+P 4800 5200
+F 0 "D38" H 4800 5300 50  0000 C CNN
+F 1 "RGBLED" H 4800 5100 50  0000 C CNN
+F 2 "~" H 4800 5200 60  0000 C CNN
+F 3 "~" H 4800 5200 60  0000 C CNN
+	1    4800 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D39
+U 1 1 5350FE51
+P 4800 6000
+F 0 "D39" H 4800 6100 50  0000 C CNN
+F 1 "RGBLED" H 4800 5900 50  0000 C CNN
+F 2 "~" H 4800 6000 60  0000 C CNN
+F 3 "~" H 4800 6000 60  0000 C CNN
+	1    4800 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D40
+U 1 1 5350FE57
+P 4800 6800
+F 0 "D40" H 4800 6900 50  0000 C CNN
+F 1 "RGBLED" H 4800 6700 50  0000 C CNN
+F 2 "~" H 4800 6800 60  0000 C CNN
+F 3 "~" H 4800 6800 60  0000 C CNN
+	1    4800 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5050 6800 5000 6800
+Wire Wire Line
+	5000 5200 5050 5200
+Wire Wire Line
+	5050 6000 5000 6000
+Connection ~ 5050 6000
+Connection ~ 5050 5200
+Text Label 5050 4800 0    60   ~ 0
+P
+Text Label 4500 5000 0    60   ~ 0
+G
+Text Label 4500 5200 0    60   ~ 0
+H
+Text Label 4500 5400 0    60   ~ 0
+J
+Text Label 4500 5800 0    60   ~ 0
+K
+Text Label 4500 6000 0    60   ~ 0
+M
+Text Label 4500 6200 0    60   ~ 0
+N
+Text Label 4500 6600 0    60   ~ 0
+Q
+Text Label 4500 6800 0    60   ~ 0
+R
+Text Label 4500 7000 0    60   ~ 0
+S
+Wire Wire Line
+	4500 5000 4600 5000
+Wire Wire Line
+	4500 5200 4600 5200
+Wire Wire Line
+	4500 5400 4600 5400
+Wire Wire Line
+	4500 5800 4600 5800
+Wire Wire Line
+	4500 6000 4600 6000
+Wire Wire Line
+	4500 6200 4600 6200
+Wire Wire Line
+	4500 6600 4600 6600
+Wire Wire Line
+	4500 6800 4600 6800
+Wire Wire Line
+	4500 7000 4600 7000
+Wire Wire Line
+	5050 4800 5050 6800
+$Comp
+L RGBLED D46
+U 1 1 5350FE78
+P 5600 5200
+F 0 "D46" H 5600 5300 50  0000 C CNN
+F 1 "RGBLED" H 5600 5100 50  0000 C CNN
+F 2 "~" H 5600 5200 60  0000 C CNN
+F 3 "~" H 5600 5200 60  0000 C CNN
+	1    5600 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D47
+U 1 1 5350FE7E
+P 5600 6000
+F 0 "D47" H 5600 6100 50  0000 C CNN
+F 1 "RGBLED" H 5600 5900 50  0000 C CNN
+F 2 "~" H 5600 6000 60  0000 C CNN
+F 3 "~" H 5600 6000 60  0000 C CNN
+	1    5600 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D48
+U 1 1 5350FE84
+P 5600 6800
+F 0 "D48" H 5600 6900 50  0000 C CNN
+F 1 "RGBLED" H 5600 6700 50  0000 C CNN
+F 2 "~" H 5600 6800 60  0000 C CNN
+F 3 "~" H 5600 6800 60  0000 C CNN
+	1    5600 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5850 6800 5800 6800
+Wire Wire Line
+	5800 5200 5850 5200
+Wire Wire Line
+	5850 6000 5800 6000
+Connection ~ 5850 6000
+Connection ~ 5850 5200
+Text Label 5850 4800 0    60   ~ 0
+Q
+Text Label 5300 5000 0    60   ~ 0
+G
+Text Label 5300 5200 0    60   ~ 0
+H
+Text Label 5300 5400 0    60   ~ 0
+J
+Text Label 5300 5800 0    60   ~ 0
+K
+Text Label 5300 6000 0    60   ~ 0
+M
+Text Label 5300 6200 0    60   ~ 0
+N
+Text Label 5300 6600 0    60   ~ 0
+P
+Text Label 5300 6800 0    60   ~ 0
+R
+Text Label 5300 7000 0    60   ~ 0
+S
+Wire Wire Line
+	5300 5000 5400 5000
+Wire Wire Line
+	5300 5200 5400 5200
+Wire Wire Line
+	5300 5400 5400 5400
+Wire Wire Line
+	5300 5800 5400 5800
+Wire Wire Line
+	5300 6000 5400 6000
+Wire Wire Line
+	5300 6200 5400 6200
+Wire Wire Line
+	5300 6600 5400 6600
+Wire Wire Line
+	5300 6800 5400 6800
+Wire Wire Line
+	5300 7000 5400 7000
+Wire Wire Line
+	5850 4800 5850 6800
+$Comp
+L RGBLED D54
+U 1 1 5350FEA3
+P 6400 5200
+F 0 "D54" H 6400 5300 50  0000 C CNN
+F 1 "RGBLED" H 6400 5100 50  0000 C CNN
+F 2 "~" H 6400 5200 60  0000 C CNN
+F 3 "~" H 6400 5200 60  0000 C CNN
+	1    6400 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D55
+U 1 1 5350FEA9
+P 6400 6000
+F 0 "D55" H 6400 6100 50  0000 C CNN
+F 1 "RGBLED" H 6400 5900 50  0000 C CNN
+F 2 "~" H 6400 6000 60  0000 C CNN
+F 3 "~" H 6400 6000 60  0000 C CNN
+	1    6400 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D56
+U 1 1 5350FEAF
+P 6400 6800
+F 0 "D56" H 6400 6900 50  0000 C CNN
+F 1 "RGBLED" H 6400 6700 50  0000 C CNN
+F 2 "~" H 6400 6800 60  0000 C CNN
+F 3 "~" H 6400 6800 60  0000 C CNN
+	1    6400 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6650 6800 6600 6800
+Wire Wire Line
+	6600 5200 6650 5200
+Wire Wire Line
+	6650 6000 6600 6000
+Connection ~ 6650 6000
+Connection ~ 6650 5200
+Text Label 6650 4800 0    60   ~ 0
+R
+Text Label 6100 5000 0    60   ~ 0
+G
+Text Label 6100 5200 0    60   ~ 0
+H
+Text Label 6100 5400 0    60   ~ 0
+J
+Text Label 6100 5800 0    60   ~ 0
+K
+Text Label 6100 6000 0    60   ~ 0
+M
+Text Label 6100 6200 0    60   ~ 0
+N
+Text Label 6100 6600 0    60   ~ 0
+P
+Text Label 6100 6800 0    60   ~ 0
+Q
+Text Label 6100 7000 0    60   ~ 0
+S
+Wire Wire Line
+	6100 5000 6200 5000
+Wire Wire Line
+	6100 5200 6200 5200
+Wire Wire Line
+	6100 5400 6200 5400
+Wire Wire Line
+	6100 5800 6200 5800
+Wire Wire Line
+	6100 6000 6200 6000
+Wire Wire Line
+	6100 6200 6200 6200
+Wire Wire Line
+	6100 6600 6200 6600
+Wire Wire Line
+	6100 6800 6200 6800
+Wire Wire Line
+	6100 7000 6200 7000
+Wire Wire Line
+	6650 4800 6650 6800
+$Comp
+L RGBLED D62
+U 1 1 5350FECE
+P 7200 5200
+F 0 "D62" H 7200 5300 50  0000 C CNN
+F 1 "RGBLED" H 7200 5100 50  0000 C CNN
+F 2 "~" H 7200 5200 60  0000 C CNN
+F 3 "~" H 7200 5200 60  0000 C CNN
+	1    7200 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D63
+U 1 1 5350FED4
+P 7200 6000
+F 0 "D63" H 7200 6100 50  0000 C CNN
+F 1 "RGBLED" H 7200 5900 50  0000 C CNN
+F 2 "~" H 7200 6000 60  0000 C CNN
+F 3 "~" H 7200 6000 60  0000 C CNN
+	1    7200 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L RGBLED D64
+U 1 1 5350FEDA
+P 7200 6800
+F 0 "D64" H 7200 6900 50  0000 C CNN
+F 1 "RGBLED" H 7200 6700 50  0000 C CNN
+F 2 "~" H 7200 6800 60  0000 C CNN
+F 3 "~" H 7200 6800 60  0000 C CNN
+	1    7200 6800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7450 6800 7400 6800
+Wire Wire Line
+	7400 5200 7450 5200
+Wire Wire Line
+	7450 6000 7400 6000
+Connection ~ 7450 6000
+Connection ~ 7450 5200
+Text Label 7450 4800 0    60   ~ 0
+S
+Text Label 6900 5000 0    60   ~ 0
+G
+Text Label 6900 5200 0    60   ~ 0
+H
+Text Label 6900 5400 0    60   ~ 0
+J
+Text Label 6900 5800 0    60   ~ 0
+K
+Text Label 6900 6000 0    60   ~ 0
+M
+Text Label 6900 6200 0    60   ~ 0
+N
+Text Label 6900 6600 0    60   ~ 0
+P
+Text Label 6900 6800 0    60   ~ 0
+Q
+Text Label 6900 7000 0    60   ~ 0
+R
+Wire Wire Line
+	6900 5000 7000 5000
+Wire Wire Line
+	6900 5200 7000 5200
+Wire Wire Line
+	6900 5400 7000 5400
+Wire Wire Line
+	6900 5800 7000 5800
+Wire Wire Line
+	6900 6000 7000 6000
+Wire Wire Line
+	6900 6200 7000 6200
+Wire Wire Line
+	6900 6600 7000 6600
+Wire Wire Line
+	6900 6800 7000 6800
+Wire Wire Line
+	6900 7000 7000 7000
+Wire Wire Line
+	7450 4800 7450 6800
+$Comp
+L ATMEGA328P-A IC1
+U 1 1 5350FF3B
+P 9150 3000
+F 0 "IC1" H 8400 4250 40  0000 L BNN
+F 1 "ATMEGA328P-A" H 9550 1600 40  0000 L BNN
+F 2 "TQFP32" H 9150 3000 30  0000 C CIN
+F 3 "" H 9150 3000 60  0000 C CNN
+	1    9150 3000
+	1    0    0    -1  
+$EndComp
+Text Label 10250 3500 0    60   ~ 0
+A
+Text Label 10250 3600 0    60   ~ 0
+B
+Text Label 10250 3700 0    60   ~ 0
+C
+Text Label 10250 3800 0    60   ~ 0
+D
+Text Label 10250 3900 0    60   ~ 0
+E
+Text Label 10250 4000 0    60   ~ 0
+F
+Text Label 10250 4100 0    60   ~ 0
+G
+Text Label 10250 4200 0    60   ~ 0
+H
+Text Label 10250 2750 0    60   ~ 0
+J
+Text Label 10250 2850 0    60   ~ 0
+K
+Text Label 10250 2950 0    60   ~ 0
+M
+Text Label 10250 3050 0    60   ~ 0
+N
+Text Label 10250 3150 0    60   ~ 0
+P
+Text Label 10250 3250 0    60   ~ 0
+Q
+Text Label 10250 1900 0    60   ~ 0
+R
+Text Label 10250 2000 0    60   ~ 0
+S
+Wire Wire Line
+	10150 1900 10250 1900
+Wire Wire Line
+	10150 2000 10250 2000
+Wire Wire Line
+	10150 2750 10250 2750
+Wire Wire Line
+	10250 2850 10150 2850
+Wire Wire Line
+	10150 2950 10250 2950
+Wire Wire Line
+	10250 3050 10150 3050
+Wire Wire Line
+	10150 3150 10250 3150
+Wire Wire Line
+	10250 3250 10150 3250
+Wire Wire Line
+	10150 3500 10250 3500
+Wire Wire Line
+	10250 3600 10150 3600
+Wire Wire Line
+	10150 3700 10250 3700
+Wire Wire Line
+	10250 3800 10150 3800
+Wire Wire Line
+	10150 3900 10250 3900
+Wire Wire Line
+	10250 4000 10150 4000
+Wire Wire Line
+	10150 4100 10250 4100
+Wire Wire Line
+	10250 4200 10150 4200
+$EndSCHEMATC
