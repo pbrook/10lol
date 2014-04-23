@@ -1,0 +1,12 @@
+EESchema-DOCLIB  Version 2.0  Date: Sun 20 Apr 2014 14:23:26 BST
+#
+$CMP AP1509
+D 5v buck regulator
+$ENDCMP
+#
+$CMP RGBLED
+D RGBLED
+K LED
+$ENDCMP
+#
+#End Doc Library

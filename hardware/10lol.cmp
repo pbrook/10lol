@@ -1,451 +1,598 @@
-Cmp-Mod V01 Created by CvPcb (2013-dec-23)-stable date = Fri 18 Apr 2014 11:06:28 BST
+Cmp-Mod V01 Created by CvPcb (2013-dec-23)-stable date = Wed 23 Apr 2014 16:11:25 BST
+
+BeginCmp
+TimeStamp = /5353E35D;
+Reference = C1;
+ValeurCmp = 330u;
+IdModule  = SMDHD/VF;
+EndCmp
+
+BeginCmp
+TimeStamp = /5353E9C7;
+Reference = C2;
+ValeurCmp = 100n;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /5353E36C;
+Reference = C3;
+ValeurCmp = 100u;
+IdModule  = SMDHD/VF;
+EndCmp
+
+BeginCmp
+TimeStamp = /5353E9B8;
+Reference = C4;
+ValeurCmp = 100n;
+IdModule  = SM0805;
+EndCmp
 
 BeginCmp
 TimeStamp = /5350F376;
 Reference = D1;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F385;
 Reference = D2;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F394;
 Reference = D3;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F3A3;
 Reference = D4;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F3B2;
 Reference = D5;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FD96;
 Reference = D6;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FD9C;
 Reference = D7;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FDA2;
 Reference = D8;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F3C1;
 Reference = D9;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F3D0;
 Reference = D10;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F3DF;
 Reference = D11;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F75A;
 Reference = D12;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F769;
 Reference = D13;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FDC3;
 Reference = D14;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FDC9;
 Reference = D15;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FDCF;
 Reference = D16;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FDF1;
-Reference = D17;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FDF7;
-Reference = D18;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FDFD;
-Reference = D19;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F8E7;
-Reference = D20;
+Reference = D17;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F8ED;
-Reference = D21;
+Reference = D18;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F8F3;
-Reference = D22;
+Reference = D19;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F912;
-Reference = D23;
+Reference = D20;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F918;
+Reference = D21;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FDF1;
+Reference = D22;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FDF7;
+Reference = D23;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FDFD;
 Reference = D24;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FE1E;
-Reference = D25;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FE24;
-Reference = D26;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FE2A;
-Reference = D27;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F951;
-Reference = D28;
+Reference = D25;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F957;
-Reference = D29;
+Reference = D26;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F95D;
-Reference = D30;
+Reference = D27;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F97C;
-Reference = D31;
+Reference = D28;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F982;
+Reference = D29;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FE1E;
+Reference = D30;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FE24;
+Reference = D31;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FE2A;
 Reference = D32;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FE4B;
-Reference = D33;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FE51;
-Reference = D34;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
-EndCmp
-
-BeginCmp
-TimeStamp = /5350FE57;
-Reference = D35;
-ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F998;
-Reference = D36;
+Reference = D33;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F99E;
-Reference = D37;
+Reference = D34;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F9A4;
-Reference = D38;
+Reference = D35;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F9C3;
-Reference = D39;
+Reference = D36;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F9C9;
+Reference = D37;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FE4B;
+Reference = D38;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FE51;
+Reference = D39;
+ValeurCmp = RGBLED;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5350FE57;
 Reference = D40;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F9DF;
 Reference = D41;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F9E5;
 Reference = D42;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350F9EB;
 Reference = D43;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA0A;
 Reference = D44;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA10;
 Reference = D45;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FE78;
 Reference = D46;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FE7E;
 Reference = D47;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FE84;
 Reference = D48;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA7B;
 Reference = D49;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA81;
 Reference = D50;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA87;
 Reference = D51;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FAA6;
 Reference = D52;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FAAC;
 Reference = D53;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FEA3;
 Reference = D54;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FEA9;
 Reference = D55;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FEAF;
 Reference = D56;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA26;
 Reference = D57;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA2C;
 Reference = D58;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA32;
 Reference = D59;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA51;
 Reference = D60;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FA57;
 Reference = D61;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FECE;
 Reference = D62;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FED4;
 Reference = D63;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
 EndCmp
 
 BeginCmp
 TimeStamp = /5350FEDA;
 Reference = D64;
 ValeurCmp = RGBLED;
-IdModule  = RGB_LED_10;
+IdModule  = RGB_LED_10_S;
+EndCmp
+
+BeginCmp
+TimeStamp = /5354021F;
+Reference = D65;
+ValeurCmp = DIODESCH;
+IdModule  = SMB;
+EndCmp
+
+BeginCmp
+TimeStamp = /535497A3;
+Reference = D66;
+ValeurCmp = DIODESCH;
+IdModule  = SMB;
+EndCmp
+
+BeginCmp
+TimeStamp = /5353D7A3;
+Reference = L1;
+ValeurCmp = 39uH;
+IdModule  = SML88;
+EndCmp
+
+BeginCmp
+TimeStamp = /535406C0;
+Reference = P1;
+ValeurCmp = CONN_2;
+IdModule  = PIN_2x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /535406B1;
+Reference = P2;
+ValeurCmp = CONN_2;
+IdModule  = PIN_2x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /53540E0D;
+Reference = P3;
+ValeurCmp = CONN_4;
+IdModule  = PIN_ARRAY_4x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /53541281;
+Reference = P4;
+ValeurCmp = CONN_4;
+IdModule  = PIN_ARRAY_4x1;
+EndCmp
+
+BeginCmp
+TimeStamp = /5354250A;
+Reference = P5;
+ValeurCmp = CONN_3X2;
+IdModule  = pin_array_3x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /53548185;
+Reference = P6;
+ValeurCmp = CONN_1;
+IdModule  = HOLE3;
+EndCmp
+
+BeginCmp
+TimeStamp = /53548176;
+Reference = P7;
+ValeurCmp = CONN_1;
+IdModule  = HOLE3;
+EndCmp
+
+BeginCmp
+TimeStamp = /53548167;
+Reference = P8;
+ValeurCmp = CONN_1;
+IdModule  = HOLE3;
+EndCmp
+
+BeginCmp
+TimeStamp = /53548158;
+Reference = P9;
+ValeurCmp = CONN_1;
+IdModule  = HOLE3;
+EndCmp
+
+BeginCmp
+TimeStamp = /5353FD70;
+Reference = R1;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /53541DFB;
+Reference = R2;
+ValeurCmp = 0;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /53541DEC;
+Reference = R3;
+ValeurCmp = 0;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5353CB64;
+Reference = U1;
+ValeurCmp = AP1509;
+IdModule  = SO8E;
+EndCmp
+
+BeginCmp
+TimeStamp = /535401D0;
+Reference = U2;
+ValeurCmp = ATMEGA328P-P;
+IdModule  = DIP-28__300_ELL;
 EndCmp
 
 EndListe
