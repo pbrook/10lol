@@ -1,0 +1,32 @@
+abcdefghjkmnpqrs
+b    a    a    a    a    a    a    a
+c a  c b  b c  b d  b e  b f  b g  b h
+d    d    d    c    c    c    c    c
+                                      
+e    e    e    e    d    d    d    d
+f a  f b  f c  f d  f e  e f  e g  e h
+g    g    g    g    g    g    f    f
+                                      
+h    h    h    h    h    h    h    g
+j a  j b  j c  j d  j e  j f  j g  j h
+k    k    k    k    k    k    k    k
+                                      
+m    m    m    m    m    m    m    m
+n a  n b  n c  n d  n e  n f  n g  n h
+p    p    p    p    p    p    p    p
+                                        
+q    q    q    q    q    q    q    q
+r a  r b  r c  r d  r e  r f  r g  r h
+s    s    s    s    s    s    s    s
+                                        
+g    g    g    g    g    g    g    g
+h j  h k  h m  h n  h p  h q  h r  h s
+k    j    j    j    j    j    j    j
+                                        
+m    m    k    k    k    k    k    k
+n j  n k  n m  m n  m p  m q  m r  m s
+p    p    p    p    n    n    n    n
+                                        
+q    q    q    q    q    p    p    p
+r j  r k  r m  r n  r p  r q  q r  q s
+s    s    s    s    s    s    s    r

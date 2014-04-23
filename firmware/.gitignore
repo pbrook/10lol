@@ -1,0 +1,5 @@
+*.o
+*.i
+main.s
+board.h
+image.*
