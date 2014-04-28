@@ -15,7 +15,8 @@ HEX=image.hex
 ELF=image.elf
 CC=avr-gcc
 LD=$(CC)
-CFLAGS=-mmcu=$(CPU) -g -O2 -Wall -save-temps
+SIZE=avr-size
+CFLAGS=-mmcu=$(CPU) -g -O2 -Wall -save-temps -fdata-sections
 LDFLAGS=$(CFLAGS) -Wl,--gc-sections 
 LIBS=-lc -lm
 OBJCOPY=avr-objcopy
@@ -35,13 +36,15 @@ fuses:
 	avrdude -q -p atmega328p -c stk500v2 -P usb \
 	  -U lfuse:w:0xe2:m -U hfuse:w:0xd9:m -U efuse:w:0x07:m
 
+size: $(ELF)
+	$(SIZE) -C --mcu=$(CPU) $(ELF)
 main.o: board.h
 
 board.h: gen-board-map.py $(BOARD)
 	./gen-board-map.py < $(BOARD) > board.h
 
 $(ELF): $(OBJS)
-	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) -Wl,-Map,image.map
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
