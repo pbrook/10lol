@@ -73,7 +73,7 @@ static void
 init_timer(void)
 {
   // CTC mode at system clock
-  TCCR0A = _BV(WGM01);;
+  TCCR0A = _BV(WGM01);
   TCCR0B = _BV(CS00);
   // 100 cycle period.  Worst-case ISR time is 67 cycles.
   // This also means we can reliably receive SPI data at
@@ -186,14 +186,22 @@ again:
 	      }
 	  }
       } else if ((data1 >> 6) == 1) {
+	  /* Set cursor position.  */
 	  selected = (data2 == my_address);
-	  /* Set position.  */
 	  current_pixel = (data1 & 0x3f) * 3;
-      } else if ((data1 & 0xfe) == 0x80) {
-	  /* Set framebuffer.  */
-	  display_frame = data2 & 1;
-	  write_frame = (data2 >> 4) & 1;
-	  write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
+      } else if (data1 == 0x80) {
+	  /* Set framebuffer (page flip).  */
+	  if (selected || (data2 & 0x80)) {
+	      display_frame = data2 & 1;
+	      write_frame = (data2 >> 1) & 1;
+	      write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
+	      selected = false;
+	  }
+#if 0
+      } else if (data1 >> 6 == 3) {
+	  FIXME set address
+	  FIME read address from eeprom
+#endif
       } else {
 	  /* Unknown command.  */
 	  active = false;
@@ -246,10 +254,10 @@ ISR(TIMER0_COMPA_vect, ISR_NAKED)
 "\n	in r16,0x2e" // SPDR
 "\n	ldi r30,lo8(fifo)"
 "\n	ldi r31,hi8(fifo)"
-"\n	or r31,r7"
+"\n	or r30,r6"
 "\n	st Z+,r16"
 "\n	andi r30, 0x3f"
-"\n	mov r7, r30"
+"\n	mov r6, r30"
 "\n.Lfifo_empty:"// 53/45 (23/16)
 "\n	out __SREG__,r8"
 "\n	mov r31,r17"
@@ -293,9 +301,12 @@ main()
   r_fifo_head = 0;
   display_map_base = ((uint16_t)&map[0]) >> 8;
   r_map_base = display_map_base;
+  write_framebuffer = &framebuffer[0];
+  /* read_framebuffer and expand_map_base set by expand_pixel.  */
 
   init_spi();
   init_timer();
+
   sei();
   do_data();
   return 0;
