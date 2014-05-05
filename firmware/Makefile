@@ -1,4 +1,4 @@
-BOARD=matrix.map
+BOARD=led.map
 
 OBJS=main.o
 
