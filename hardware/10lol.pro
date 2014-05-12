@@ -1,8 +1,6 @@
-update=Wed 23 Apr 2014 16:11:05 BST
+update=Mon 12 May 2014 18:30:27 BST
 version=1
-last_client=eeschema
-[general]
-version=1
+last_client=kicad
 [cvpcb]
 version=1
 NetIExt=net
@@ -85,3 +83,5 @@ LibName28=opto
 LibName29=atmel
 LibName30=contrib
 LibName31=valves
+[general]
+version=1

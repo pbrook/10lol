@@ -1,7 +1,17 @@
-EESchema-DOCLIB  Version 2.0  Date: Sun 20 Apr 2014 14:23:26 BST
+EESchema-DOCLIB  Version 2.0  Date: Mon 12 May 2014 17:19:42 BST
+#
+$CMP 74HC138
+D Decoder 3 to 8 (active low outputs)
+K TTL DECOD DECOD8
+$ENDCMP
 #
 $CMP AP1509
 D 5v buck regulator
+$ENDCMP
+#
+$CMP CONN_16
+D Symbole general de connexion
+K CONN
 $ENDCMP
 #
 $CMP RGBLED
