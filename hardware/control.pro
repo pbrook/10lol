@@ -1,5 +1,5 @@
-update=Mon 12 May 2014 14:10:03 BST
-last_client=eeschema
+update=Mon 12 May 2014 18:47:05 BST
+last_client=cvpcb
 [eeschema]
 version=1
 LibDir=
@@ -40,3 +40,45 @@ LibName28=opto
 LibName29=atmel
 LibName30=contrib
 LibName31=valves
+[pcbnew]
+version=1
+LastNetListRead=control.net
+UseCmpFile=1
+PadDrill="    0.600000"
+PadDrillOvalY="    0.600000"
+PadSizeH="    1.500000"
+PadSizeV="    1.500000"
+PcbTextSizeV="    1.500000"
+PcbTextSizeH="    1.500000"
+PcbTextThickness="    0.300000"
+ModuleTextSizeV="    1.000000"
+ModuleTextSizeH="    1.000000"
+ModuleTextSizeThickness="    0.150000"
+SolderMaskClearance="    0.000000"
+SolderMaskMinWidth="    0.000000"
+DrawSegmentWidth="    0.200000"
+BoardOutlineThickness="    0.100000"
+ModuleOutlineThickness="    0.150000"
+[pcbnew/libraries]
+LibName1=10lol
+LibName2=sockets
+LibName3=connect
+LibName4=discret
+LibName5=pin_array
+LibName6=divers
+LibName7=smd_capacitors
+LibName8=smd_resistors
+LibName9=smd_dil
+LibName10=smd_transistors
+LibName11=libcms
+LibName12=display
+LibName13=led
+LibName14=dip_sockets
+LibName15=pga_sockets
+LibName16=valves
+LibDir=
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
