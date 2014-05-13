@@ -41,7 +41,7 @@ size: $(ELF)
 main.o: board.h
 
 board.h: gen-board-map.py $(BOARD)
-	./gen-board-map.py < $(BOARD) > board.h
+	./gen-board-map.py --rgb < $(BOARD) > board.h
 
 $(ELF): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) -Wl,-Map,image.map
