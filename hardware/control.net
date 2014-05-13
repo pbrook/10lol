@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/paul/hs/10lol/hardware/control.sch)
-    (date "Tue 13 May 2014 00:11:35 BST")
+    (date "Tue 13 May 2014 01:58:06 BST")
     (tool "eeschema (2013-dec-23)-stable"))
   (components
     (comp (ref U1)

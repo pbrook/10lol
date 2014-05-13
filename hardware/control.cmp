@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2013-dec-23)-stable date = Mon 12 May 2014 23:35:37 BST
+Cmp-Mod V01 Created by PcbNew date = Tue 13 May 2014 01:57:06 BST
 
 BeginCmp
 TimeStamp = /5353E35D;
@@ -144,112 +144,112 @@ BeginCmp
 TimeStamp = /5370D5DA;
 Reference = Q1;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F365;
 Reference = Q2;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F371;
 Reference = Q3;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F377;
 Reference = Q4;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F37F;
 Reference = Q5;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F385;
 Reference = Q6;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F38D;
 Reference = Q7;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F393;
 Reference = Q8;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F682;
 Reference = Q9;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F688;
 Reference = Q10;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F690;
 Reference = Q11;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F696;
 Reference = Q12;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F69E;
 Reference = Q13;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F6A4;
 Reference = Q14;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F6AC;
 Reference = Q15;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
 TimeStamp = /5370F6B2;
 Reference = Q16;
 ValeurCmp = NX2301P;
-IdModule  = SOT23GDS;
+IdModule  = SOT23GDS_NP;
 EndCmp
 
 BeginCmp
