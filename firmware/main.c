@@ -1,310 +1,417 @@
-//#define F_CPU 128000
+#define F_CPU 16000000ul
+
 #include <stdint.h>
-register uint8_t r_fifo_head asm("r6");
-register uint8_t r_map_base asm("r7");
-register uint16_t r_cathode_mask asm("r10");
-register uint8_t r_pos asm("r12");
-register uint8_t r_skip asm("r13");
-register uint8_t r_tmp1 asm("r9");
-register uint8_t r_tmp2 asm("r8");
-register uint8_t r_tmp3 asm("r16");
-register uint8_t r_tmp4 asm("r17");
 
 #include <avr/io.h>
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
+#include <avr/cpufunc.h>
+#include <avr/eeprom.h>
+#include <util/delay.h>
 #include <stdbool.h>
+
+#define FIFO_SIZE 64
 
 #define NUM_FRAMES 2
 
 #define NUM_PIXELS (8*8*3)
 
-// The framebuffer stores raw (4-bit) brightness values, so we can handle SPI data quickly
-// The map array stores actual pin values, to quickly update the drive pins
-// We populate this from the framebuffer when we have nothing better to do
-volatile uint16_t map[16 * 16 * NUM_FRAMES] __attribute__((aligned(256))) __attribute__((section(".data")));
+volatile uint8_t framebuffer[16 * 16 * NUM_FRAMES];
 
-static uint8_t framebuffer[16*16 * NUM_FRAMES];
-
-static uint8_t read_frame;
-static uint8_t *read_framebuffer;
-static volatile uint16_t *expand_map_base;
 static uint8_t write_frame;
-static uint8_t *write_framebuffer;
+static volatile uint8_t *write_framebuffer;
 
 static uint8_t display_frame;
-volatile uint8_t display_map_base;
+static volatile uint8_t *display_framebuffer;
 
-volatile uint8_t fifo[128] __attribute__((aligned(128))) __attribute__((section(".data.fifo")));
+#define FIFO_MASK (FIFO_SIZE - 1)
+#if (FIFO_SIZE & FIFO_MASK) != 0
+#error
+#endif
+volatile uint8_t fifo[FIFO_SIZE];
 
+volatile uint8_t fifo_head;
 
 #define PIXEL(a, k) ((a) | ((k) << 4))
 
-// This table translates from an 8x8 RGB matrix to the
+#define SET_XLAT() PORTD |= _BV(5)
+#define CLEAR_XLAT() PORTD &= ~_BV(5)
+
+#define SET_BLANK() PORTD |= _BV(7)
+#define CLEAR_BLANK() PORTD &= ~_BV(7)
+
+#define SET_VPRG() PORTD |= _BV(3)
+#define CLEAR_VPRG() PORTD &= ~_BV(3)
+
+#define SET_DCPRG() PORTB |= _BV(0);
+#define CLEAR_DCPRG() PORTB &= ~_BV(0);
+
+// This table translates from an 8x8x3 grid to the
 // 16x16 anode/cathode matrix used by the framebuffer
 const uint8_t pixel_map[NUM_PIXELS] PROGMEM = {
 #include "board.h"
 };
 
-#define PD_SHIFT 0
-#define PD_MASK 0xff
-#define PD_DDR	0x00
-#define PD_PORT	0x00
-
-#define PC_SHIFT 10
-#define PC_MASK 0x3f
-#define PC_DDR	0x00
-#define PC_PORT	0x00
-
-#define PB_SHIFT 8
-#define PB_MASK 0x03
-#define PB_DDR	0x00
-#define PB_PORT	0x3c
-
+// enable pullups on unused pins
 static void
-init_spi(void)
+init_unused(void)
 {
-  // Slave mode
-  SPCR = _BV(SPE) | _BV(CPOL) | _BV(CPHA);
+  // Not connected
+  PORTB |= _BV(1);
+  PORTD |= _BV(2);
 }
 
+static void
+init_i2c(void)
+{
+  // We do not currently use I2C.
+  // However we do use the SDA pin for address programming
+  // Enable pullup and SDA and SCL
+  PORTC |= _BV(4) | _BV(5);
+}
+
+static void
+init_spi_slave(void)
+{
+  // Mode3, slave mode, MSB first, enable interrupt
+  SPCR = _BV(SPIE) | _BV(SPE) | _BV(CPOL) | _BV(CPHA);
+
+  // Enable pullups on SS, MOSI, MISO, SCK
+  PORTB |= _BV(2) | _BV(3) | _BV(4) | _BV(5);
+}
+
+static void
+init_spi_master(void)
+{
+  // Configure UART in SPI master mode, clk/2, mode0, MSB first
+  UCSR0C = _BV(UMSEL01) | _BV(UMSEL00);
+  UBRR0 = 0;
+  UCSR0B = _BV(TXEN0);
+
+  // Enable clock and data pins
+  DDRD |= _BV(1) | _BV(4);
+  // Enable pullup on input
+  PORTD |= _BV(0);
+}
+
+// 2kHz refresh timer
 static void
 init_timer(void)
 {
-  // CTC mode at system clock
-  TCCR0A = _BV(WGM01);
-  TCCR0B = _BV(CS00);
-  // 100 cycle period.  Worst-case ISR time is 67 cycles.
-  // This also means we can reliably receive SPI data at
-  // fosc/16
-  OCR0A = 100;
-  TIMSK0 = _BV(OCIE0A);
+  // CTC mode
+  TCNT1 = 0;
+  OCR1A = 8000;
+  TCCR1A = 0;
+  TCCR1B = _BV(WGM12);
+  // Enable OC0A output
+  PORTB |= _BV(6);
 }
-
-static const uint16_t mask_lookup[16] = 
-{
-  0x0001, 0x0002, 0x0004, 0x0008,
-  0x0010, 0x0020, 0x0040, 0x0080,
-  0x0100, 0x0200, 0x0400, 0x0800,
-  0x1000, 0x2000, 0x4000, 0x8000,
-};
-
-static bool active;
-static bool changed[NUM_FRAMES];
 
 static void
-expand_pixel(void)
+init_gsclk(void)
 {
-  static uint8_t pos;
-  uint16_t mask;
-  uint8_t i;
-  volatile uint16_t *p;
-  uint8_t val;
-
-  if (pos == 0) {
-      if (!changed[display_frame]) {
-	  display_map_base = ((uint16_t)&map[0] >> 8) + display_frame * 2;
-      }
-      read_frame = 1 - read_frame;
-      if (!changed[read_frame]) {
-	  return;
-      }
-      changed[read_frame] = false;
-      read_framebuffer = &framebuffer[(uint16_t)read_frame * 16 * 16];
-      expand_map_base = &map[(uint16_t)read_frame * 16 * 16];
-  }
-  val = read_framebuffer[pos];
-  mask = mask_lookup[pos & 0xf];
-  p = &expand_map_base[pos & 0xf0u];
-  for (i = 0; i < val; i++) {
-      *(p++) |= mask;
-  }
-  for (; i < 0x10; i++) {
-      *(p++) &= ~mask;
-  }
-  pos++;
+  // CTC mode, toggle OC0A
+  TCCR0A = _BV(COM0A0) | _BV(WGM01);
+  TCCR0B = 0;
+  TCNT0 = 0;
+  // 570kHz output clock
+  OCR0A = 14;
+  // Enable OC0A output
+  PORTB |= _BV(6);
 }
+
+static inline void
+enable_gsclk(void)
+{
+  TCCR0B = _BV(CS01);
+}
+
+static inline void
+disable_gsclk(void)
+{
+  TCCR0B = 0;
+  TCNT0 = 0;
+  // Make sure output line is low
+  _NOP();
+  if (PINB & _BV(6)) {
+      TCCR0B |= _BV(FOC0A);
+  }
+}
+
+static uint8_t eeprom_address EEMEM;
 
 static uint8_t my_address;
 
-static uint8_t current_pixel;
-
-static void
-do_pixel(uint8_t val)
+static inline void
+do_pixel(uint8_t n, uint8_t val)
 {
   uint8_t pos;
-  pos = pgm_read_byte(&pixel_map[current_pixel]);
-  current_pixel++;
+  pos = pgm_read_byte(&pixel_map[n]);
   write_framebuffer[pos] = val;
-  changed[write_frame] = true;
+}
+
+static volatile uint8_t fb_offset;
+static volatile bool sending_frame;
+static volatile uint8_t dc_bytes;
+static volatile bool dc_changed;
+
+static uint8_t dc[12];
+
+static void
+send_data(void)
+{
+  uint8_t tmp;
+
+  if ((UCSR0A & _BV(UDRE0)) == 0)
+    return;
+
+  //  All data is send MSB first
+  if (dc_bytes) {
+      // Dot correction data
+      dc_bytes--;
+      UDR0 = dc[dc_bytes];
+      if (dc_bytes == 0) {
+	  // Latch data into register
+	  SET_XLAT();
+	  CLEAR_XLAT();
+	  CLEAR_VPRG();
+	  SET_DCPRG();
+      }
+  } else if (sending_frame) {
+      // PWM data
+      // The count registers are 12 bits, so a pair of values expand to 
+      // 3 bytes of data.  We can not submit all this immediately, but the USART
+      // double buffering means we probably only stall for 16 cycles and it is
+      // not worth trying to be clever.
+      fb_offset--;
+      tmp = display_framebuffer[fb_offset];
+      UDR0 = tmp >> 4;
+      tmp <<= 4;
+      while ((UCSR0A & _BV(UDRE0)) == 0)
+	/* no-op */;
+      UDR0 = tmp;
+      fb_offset--;
+      tmp = display_framebuffer[fb_offset];
+      if ((fb_offset & 0xf) == 0) {
+	  sending_frame = false;
+	  display_framebuffer = &framebuffer[(uint16_t)display_frame * 16 * 16];
+      }
+      while ((UCSR0A & _BV(UDRE0)) == 0)
+	/* no-op */;
+      UDR0 = tmp;
+  }
+}
+
+static void
+set_address(uint8_t address)
+{
+  if (address == 0xff)
+    return;
+  my_address = address;
+  eeprom_update_byte(&eeprom_address, address);
+}
+
+static void
+set_dc(uint8_t red, uint8_t green, uint8_t blue)
+{
+  /* Dot correction data is only 6 bits.  */
+  red >>= 2;
+  green >>= 2;
+  blue >>= 2;
+  /* Pack data ready for transmission.  */
+  dc[0] = red | (green << 6);
+  dc[1] = (green >> 2) | (blue << 4);
+  dc[2] = (blue >> 4) | (red << 2);
+  dc[3] = green | (blue << 6);
+  dc[4] = (blue >> 2) | (red << 4);
+  dc[5] = (red >> 4) | (green << 2);
+  dc[6] = blue | (red << 6);
+  dc[7] = (red >> 2) | (green << 4);
+  dc[8] = (green >> 4) | (blue << 2);
+  dc[9] = red | (green << 6);
+  dc[10] = (green >> 2) | (blue << 4);
+  dc[11] = (blue >> 4); // last channel unused
+  dc_changed = true;
 }
 
 static void
 do_data(void)
 {
-  uint8_t data1;
-  bool selected;
-  uint8_t data2;
+  uint8_t n;
+  uint8_t cmd;
+  uint8_t d0;
+  uint8_t d1;
+  uint8_t d2;
+  uint8_t new_address;
+  uint8_t latched_address;
+  bool active;
   uint8_t fifo_tail;
+  bool selected;
 
   fifo_tail = 0;
   active = false;
-  selected = false;
   while (true) {
-      while (fifo_tail == r_fifo_head)
-       	expand_pixel();
-      data1 = fifo[fifo_tail];
-      fifo_tail = (fifo_tail + 1) & 0x3f;
-again:
-      while (fifo_tail == r_fifo_head)
-       	expand_pixel();
-      data2 = fifo[fifo_tail];
-      fifo_tail = (fifo_tail + 1) & 0x3f;
-      if (data1 == 0xff) {
+      n = (fifo_head - fifo_tail) & FIFO_MASK;
+      if (n < 4) {
+	  send_data();
+	  continue;
+      }
+      if (!active) {
+	selected = false;
+	latched_address = 0xff;
+      }
+      cmd = fifo[fifo_tail];
+      fifo_tail = (fifo_tail + 1) & FIFO_MASK;
+      if (cmd == 0xff) {
 	  active = false;
-	  if (data2 == 0xff) {
-	      goto again;
-	  }
-	  if (data2 == 0xf5) {
+	  continue;
+      }
+      d0 = fifo[fifo_tail];
+      fifo_tail = (fifo_tail + 1) & FIFO_MASK;
+      d1 = fifo[fifo_tail];
+      fifo_tail = (fifo_tail + 1) & FIFO_MASK;
+      d2 = fifo[fifo_tail];
+      fifo_tail = (fifo_tail + 1) & FIFO_MASK;
+      if (cmd == 0xe0) {
+	  // Initialize
+	  if (d0 == 0xf0 && d1 == 0xf1 && d2 == 0xf2) {
+	      latched_address = new_address;
 	      active = true;
+	  } else {
+	      active = false;
 	  }
 	  continue;
       }
-      if (!active)
-	continue;
-      if ((data1 >> 6) == 0) {
-	  /* Pixel data.  */
+      new_address = 0xff;
+      if (!active) {
+	  continue;
+      }
+      if (cmd < NUM_PIXELS) {
 	  if (selected) {
-	     if (current_pixel < NUM_PIXELS) {
-		  do_pixel(data1 & 0xf);
-		  do_pixel(data2 >> 4);
-		  do_pixel(data2 & 0xf);
-	      } else {
-		  selected = false;
-		  active = false;
+	      n = cmd * 3;
+	      do_pixel(n, d0);
+	      do_pixel(n + 1, d1);
+	      do_pixel(n + 2, d2);
+	  }
+      } else if (cmd == 0x80) {
+	  /* Board select */
+	  if (d0 == my_address || d0 == 0xff)
+	    selected = true;
+	  else
+	    selected = false;
+      } else if (cmd == 0x81) {
+	  /* Set framebuffer (page flip).  */
+	  if (d0 == my_address || d0 == 0xff) {
+	      display_frame = d1 % NUM_FRAMES;
+	      write_frame = d2 % NUM_FRAMES;
+	      write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
+	  }
+      } else if (cmd == 0x82) {
+	  /* Set brightness */
+	  if (selected) {
+	      set_dc(d0, d1, d2);
+	  }
+      } else if (cmd == 0xe1) {
+	  /* Set address.  */
+	  if ((d0 == 0xf5 || d0 == 0xfa) && d1 >= 0xf0 && d2 >= 0xf0) {
+	      new_address = (d1 << 4) | (d2 & 0x0f);
+	      if (cmd == 0xfa && ~new_address == latched_address) {
+		  set_address(latched_address);
+		  new_address = 0xff;
 	      }
 	  }
-      } else if ((data1 >> 6) == 1) {
-	  /* Set cursor position.  */
-	  selected = (data2 == my_address);
-	  current_pixel = (data1 & 0x3f) * 3;
-      } else if (data1 == 0x80) {
-	  /* Set framebuffer (page flip).  */
-	  if (selected || (data2 & 0x80)) {
-	      display_frame = data2 & 1;
-	      write_frame = (data2 >> 1) & 1;
-	      write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
-	      selected = false;
-	  }
-#if 0
-      } else if (data1 >> 6 == 3) {
-	  FIXME set address
-	  FIME read address from eeprom
-#endif
+	  active = false;
       } else {
 	  /* Unknown command.  */
 	  active = false;
-	  selected = false;
       }
   }
 }
 
-ISR(TIMER0_COMPA_vect, ISR_NAKED)
+ISR(SPI_STC_vect)
 {
-#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
-  asm(
-"\n	mov r9,r30"
-"\n	mov r17,r31"
-"\n	in r8,__SREG__"
-"\n	mov r30,r12"
-"\n	andi r30,lo8(15)"
-"\n	breq .Lstart_frame" // 7
-"\n.Lout_line:" // 14/6
-"\n	mov r30,r12"
-"\n	clr r31"
-"\n	lsl r30"
-"\n	rol r31"
-"\n	add r31, r7"
-"\n	ld r16,Z+"
-"\n	ld r31,Z" // 23/15
-"\n	out 0xb,r16" // PORTD
-"\n	inc r12"
-"\n	mov r30,r31"
-"\n	andi r30,lo8(3)"
-"\n	ori r30,lo8(60)"
-"\n	out 0x5,r30" // PORTB
-"\n	mov r30,r31"
-"\n	lsr r30"
-"\n	lsr r30"
-"\n	out 0x8,r30" // PORTC
-"\n	or r16,r10" // 34/26
-"\n	or r31,r11"
-"\n	out 0xa,r16" //DDRD
-"\n	mov r16,r31"
-"\n	andi r16,lo8(3)"
-"\n	out 0x4,r16" // DDRB
-"\n	lsr r31"
-"\n	lsr r31"
-"\n	out 0x7,r31" // DDRC
-"\n.Ldone:"// 42/34 (12)
-"\n	in r16,0x2d" // SPSR
-"\n	tst r16"
-"\n	brpl .Lfifo_empty"
-"\n	in r16,0x2e" // SPDR
-"\n	ldi r30,lo8(fifo)"
-"\n	ldi r31,hi8(fifo)"
-"\n	or r30,r6"
-"\n	st Z+,r16"
-"\n	andi r30, 0x3f"
-"\n	mov r6, r30"
-"\n.Lfifo_empty:"// 53/45 (23/16)
-"\n	out __SREG__,r8"
-"\n	mov r31,r17"
-"\n	mov r30,r9"
-"\n	reti" // 60/52 + 4 + 3 = 67/59 (30/23 + 7 = 37/30)
+  fifo[fifo_head] = SPDR;
+  fifo_head = (fifo_head + 1) & FIFO_MASK;
+}
 
-"\n.Lstart_frame:" // 7
-"\n	tst r13"
-"\n	breq .Lfirst_line"
-"\n	dec r13"
-"\n	brne .Ldone"
-"\n	lsl r10" // 12
-"\n	rol r11"
-"\n	brcc .Lframe_wrap"
-"\n	inc r10"
-"\n.Lframe_wrap:"
-// Tristate everything to avoid glitches
-"\n	clr r30"
-"\n	out 0x4,r30" // DDRB
-"\n	out 0x7,r30" // DDRC
-"\n	out 0xa,r30" // DDRD
-// Update base pointer
-"\n	lds r7, display_map_base"
-"\n	rjmp .Ldone" // 24
-"\n.Lfirst_line:" // 10
-"\n	ldi r30,lo8(16)"
-"\n	mov r13,r30"
-"\n	rjmp .Lout_line" // 14
-  );
-#else
-#error Unsupported CPU
-#endif
+volatile uint8_t next_anode;
+
+ISR(TIMER1_COMPA_vect)
+{
+  // Enable interrupts so we are not blocking the SPI slave interrupt.
+  // The clock period is long enough that we don't have to worry about
+  // nested timer interrupts
+  sei();
+
+  disable_gsclk();
+  // FIXME: Badness happens if the previous shift has not finished yet
+  SET_BLANK();
+  if (next_anode != 0xff) {
+      // Latch data into the register
+      SET_XLAT();
+      CLEAR_XLAT();
+      // Select the next anode
+      // The 8 outputs of each decoder are connected in reverse order
+      PORTC = (PORTC & ~0xf) | (next_anode ^ 7);
+      // Delay a few us for everything to settle.
+      _delay_us(5);
+  }
+  next_anode = (next_anode + 1) & 0xf;
+  // Shift in the next set of anode data
+  sending_frame = true;
+  // Data is send MSB first, so point just past the end pf the frame data
+  // i.e. the start of the next frame data
+  fb_offset = next_anode * 16;
+  // And dot correction data if needed
+  if (dc_changed) {
+      dc_bytes = 12;
+      SET_VPRG();
+  }
+  // Triggering the greyscale clock is timing critical, so disable interrupts
+  cli();
+  // Trigger the output pulse
+  CLEAR_BLANK();
+  enable_gsclk();
+}
+
+static void
+init_5940(void)
+{
+  init_gsclk();
+  init_spi_slave();
+  // Setup VPRG, XLAT, BLANK
+  DDRD |= _BV(3) | _BV(5) | _BV(7);
+  SET_BLANK();
+  CLEAR_XLAT();
+  CLEAR_VPRG();
+  // Setup DCPRG
+  DDRB |= _BV(0);
+  CLEAR_DCPRG();
+}
+
+static void
+init_eeprom()
+{
+  my_address = eeprom_read_byte(&eeprom_address);
+  if (my_address == 0xff)
+    my_address = 0;
 }
 
 int
 main()
 {
-  r_cathode_mask = 1;
-  r_pos = 0;
-  r_skip = 0;
-  r_fifo_head = 0;
-  display_map_base = ((uint16_t)&map[0]) >> 8;
-  r_map_base = display_map_base;
+  fifo_head = 0;
+  next_anode = 0xff;
+  sending_frame = false;
   write_framebuffer = &framebuffer[0];
-  /* read_framebuffer and expand_map_base set by expand_pixel.  */
+  display_framebuffer = &framebuffer[0];
 
-  init_spi();
+  init_eeprom();
+  init_unused();
+  init_i2c();
+  init_5940();
+  init_spi_master();
   init_timer();
 
   sei();

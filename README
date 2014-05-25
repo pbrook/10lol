@@ -1,0 +1,89 @@
+10LOL display board (10mm rgb led charlieplexed display matrix)
+====
+
+Hardware designs and firmware for a modular matrix display board.
+
+Each module consists of an LED carrier board and a driver board.
+
+Supply voltage is 7-20V (with onboard switching regulator).
+TODO: Figure out actual power requirements, and if a single regulator can power
+multiple modules.
+
+The control board 
+Modules operate autonomously,  module operates autonomously, accepting data over SPI.
+The modules can be programmed with unique addresses, allowing
+multiple modules on a single SPI bus.
+
+
+SPI communication protocol
+====
+
+Commands are 4 bytes.  The first byte identidies the command, followed by 3
+bytes of argument data (d0-d2).
+
+On power-up the board will be in disconnected state.  A disconnect command
+followed by a connect command should be used to ensure the serial interface
+is in a coherent state.
+
+Commands are as follows:
+
+0x00 - 0x3f: Write pixel
+ Pixels numbered left-right,then top-bottom)
+  d0: red
+  d1: green
+  d2: blue
+
+0x80: Board select
+ Only the selected board will respond to write pixel commands.
+  d0: board address (0xff to select all boards)
+  d1: Unused (0)
+  d2: Unused (0)
+
+0x81: Page flip
+ Set the framebuffer page for both display and pixel writing.
+ This allows double buffered updates
+  d0: board address (0xff for all baords)
+  d1: display page number
+  d2: pixel write page number
+
+0x82: Set brightness
+ Sets brightness/color ballance of selected board
+  d0: Red brightness
+  d1: Green brightness
+  d2: Blue brightness
+
+0xe0: Connect
+ Prepares the board for other commands
+  d0: 0xf0
+  d1: 0xf1
+  d2: 0xf2
+
+0xe1: Set board address
+ Modifies the board address (stored on on-chip EEPROM).
+ The board will only respond to this address if the SDA pin is pulled low.
+ This allows the addresses to be set without disconnecting the board.
+ This command must be sent twice, with a connect command in between.
+ First command:
+  d0: 0xf5
+  d1: 0xf0 + high address nibble
+  d2: 0xf0 + low address nibble
+ Second command:
+  d0: 0xfa
+  d1: 0xf0 + inverted high address nibble
+  d2: 0xf0 + inverted low address nibble
+ e.g. The full sequence for setting the board address to 41 (0x29) is:
+  0xff 0xff 0xff 0xff
+  0xe0 0xf0 0xf1 0xf2
+  0xe1 0xf5 0xf2 0xf9
+  0xe0 0xf0 0xf1 0xf2
+  0xe1 0xfa 0xfd 0xf6
+
+0xff: Disconnect
+ Reset serial interface.
+ The connect command must be sent before any other commands.
+ The data bytes on this command are optional.  However sending the full
+ sequence bytes ensures that the board is preoperly aligned with the
+ four byte command boundary.
+  d0: 0xff
+  d1: 0xff
+  d2: 0xff
