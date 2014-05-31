@@ -25,6 +25,10 @@ static volatile uint8_t *write_framebuffer;
 static uint8_t display_frame;
 static volatile uint8_t *display_framebuffer;
 
+volatile uint8_t next_anode;
+
+volatile uint8_t ticks;
+
 #define FIFO_MASK (FIFO_SIZE - 1)
 #if (FIFO_SIZE & FIFO_MASK) != 0
 #error
@@ -32,8 +36,6 @@ static volatile uint8_t *display_framebuffer;
 volatile uint8_t fifo[FIFO_SIZE];
 
 volatile uint8_t fifo_head;
-
-#define PIXEL(a, k) ((a) | ((k) << 4))
 
 #define SET_XLAT() PORTD |= _BV(5)
 #define CLEAR_XLAT() PORTD &= ~_BV(5)
@@ -50,6 +52,7 @@ volatile uint8_t fifo_head;
 // This table translates from an 8x8x3 grid to the
 // 16x16 anode/cathode matrix used by the framebuffer
 const uint8_t pixel_map[NUM_PIXELS] PROGMEM = {
+#define PIXEL(a, k) ((15 - (k)) | ((a) << 4))
 #include "board.h"
 };
 
@@ -101,11 +104,11 @@ init_timer(void)
 {
   // CTC mode
   TCNT1 = 0;
-  OCR1A = 8000;
+  OCR1A = 8000; // 8000 cycles = 500us = 2Khz
   TCCR1A = 0;
-  TCCR1B = _BV(WGM12);
-  // Enable OC0A output
-  PORTB |= _BV(6);
+  TCCR1B = _BV(WGM12) | _BV(CS10);
+  // Enable OCA interrupt
+  TIMSK1 = _BV(OCIE1A);
 }
 
 static void
@@ -115,16 +118,17 @@ init_gsclk(void)
   TCCR0A = _BV(COM0A0) | _BV(WGM01);
   TCCR0B = 0;
   TCNT0 = 0;
-  // 570kHz output clock
+  // 570kHz output clock.  Combined with a 2kHz row mux this gives a maximum
+  // PWM value of 0xff, plus a bit of extra delay for latching in new data.
   OCR0A = 14;
   // Enable OC0A output
-  PORTB |= _BV(6);
+  DDRD |= _BV(6);
 }
 
 static inline void
 enable_gsclk(void)
 {
-  TCCR0B = _BV(CS01);
+  TCCR0B = _BV(CS00);
 }
 
 static inline void
@@ -158,6 +162,26 @@ static volatile bool dc_changed;
 
 static uint8_t dc[12];
 
+bool done_tick;
+
+static void
+demo_tick(void)
+{
+  static int n;
+
+  //do_pixel(4*24+0*3+1, 0x20);
+#if 1
+  do_pixel(n, 0);
+  n += 3;
+  if (n >= 8*8*3) {
+      n = (n - 8*8*3) + 1;
+      if (n == 3)
+	n = 0;
+  }
+  do_pixel(n, 0xff);
+#endif
+}
+
 static void
 send_data(void)
 {
@@ -172,11 +196,13 @@ send_data(void)
       dc_bytes--;
       UDR0 = dc[dc_bytes];
       if (dc_bytes == 0) {
+	  // Wait for the transmit to complete
+	  _delay_us(20);
 	  // Latch data into register
 	  SET_XLAT();
 	  CLEAR_XLAT();
-	  CLEAR_VPRG();
 	  SET_DCPRG();
+	  CLEAR_VPRG();
       }
   } else if (sending_frame) {
       // PWM data
@@ -184,22 +210,30 @@ send_data(void)
       // 3 bytes of data.  We can not submit all this immediately, but the USART
       // double buffering means we probably only stall for 16 cycles and it is
       // not worth trying to be clever.
-      fb_offset--;
-      tmp = display_framebuffer[fb_offset];
+      tmp = display_framebuffer[fb_offset++];
       UDR0 = tmp >> 4;
       tmp <<= 4;
       while ((UCSR0A & _BV(UDRE0)) == 0)
 	/* no-op */;
       UDR0 = tmp;
-      fb_offset--;
-      tmp = display_framebuffer[fb_offset];
+      tmp = display_framebuffer[fb_offset++];
       if ((fb_offset & 0xf) == 0) {
+	  _delay_us(2);
 	  sending_frame = false;
 	  display_framebuffer = &framebuffer[(uint16_t)display_frame * 16 * 16];
       }
       while ((UCSR0A & _BV(UDRE0)) == 0)
 	/* no-op */;
       UDR0 = tmp;
+  } else {
+      if (ticks == 0) {
+	  if (!done_tick) {
+	      demo_tick();
+	      done_tick = true;
+	  }
+      } else {
+	done_tick = false;
+      }
   }
 }
 
@@ -335,16 +369,15 @@ ISR(SPI_STC_vect)
   fifo_head = (fifo_head + 1) & FIFO_MASK;
 }
 
-volatile uint8_t next_anode;
-
 ISR(TIMER1_COMPA_vect)
 {
+  ticks++;
   // Enable interrupts so we are not blocking the SPI slave interrupt.
   // The clock period is long enough that we don't have to worry about
   // nested timer interrupts
   sei();
 
-  disable_gsclk();
+  //disable_gsclk();
   // FIXME: Badness happens if the previous shift has not finished yet
   SET_BLANK();
   if (next_anode != 0xff) {
@@ -359,14 +392,13 @@ ISR(TIMER1_COMPA_vect)
   }
   next_anode = (next_anode + 1) & 0xf;
   // Shift in the next set of anode data
-  sending_frame = true;
-  // Data is send MSB first, so point just past the end pf the frame data
-  // i.e. the start of the next frame data
   fb_offset = next_anode * 16;
+  sending_frame = true;
   // And dot correction data if needed
   if (dc_changed) {
       dc_bytes = 12;
       SET_VPRG();
+      dc_changed = false;
   }
   // Triggering the greyscale clock is timing critical, so disable interrupts
   cli();
@@ -398,14 +430,28 @@ init_eeprom()
     my_address = 0;
 }
 
+static void
+init_anodes(void)
+{
+  /* Anode select pins.  */
+  DDRC |= 0xf;
+  PORTC |= 0xf;
+}
+
 int
 main()
 {
+  /* Do this early to minimize amount of time pins are left floating.  */
+  SET_BLANK();
+  init_anodes();
+
   fifo_head = 0;
   next_anode = 0xff;
   sending_frame = false;
   write_framebuffer = &framebuffer[0];
   display_framebuffer = &framebuffer[0];
+
+  set_dc(0x40,0x80,0x60);
 
   init_eeprom();
   init_unused();

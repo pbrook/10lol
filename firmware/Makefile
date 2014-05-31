@@ -1,4 +1,4 @@
-BOARD=led.map
+BOARD=board.map
 
 OBJS=main.o
 
@@ -34,7 +34,7 @@ upload: $(HEX)
 
 fuses:
 	avrdude -q -p atmega328p -c stk500v2 -P usb \
-	  -U lfuse:w:0xe2:m -U hfuse:w:0xd9:m -U efuse:w:0x07:m
+	  -U lfuse:w:0xff:m -U hfuse:w:0xd9:m -U efuse:w:0x04:m
 
 size: $(ELF)
 	$(SIZE) -C --mcu=$(CPU) $(ELF)
