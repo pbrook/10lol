@@ -371,16 +371,22 @@ ISR(SPI_STC_vect)
 
 ISR(TIMER1_COMPA_vect)
 {
+  static uint8_t overload;
   ticks++;
   // Enable interrupts so we are not blocking the SPI slave interrupt.
   // The clock period is long enough that we don't have to worry about
   // nested timer interrupts
   sei();
+  if (sending_frame)
+    overload = 0xff;
 
-  //disable_gsclk();
-  // FIXME: Badness happens if the previous shift has not finished yet
+  disable_gsclk();
   SET_BLANK();
-  if (next_anode != 0xff) {
+  if (overload) {
+      overload--;
+      return;
+  }
+  if (next_anode != 0xff && !overload) {
       // Latch data into the register
       SET_XLAT();
       CLEAR_XLAT();
