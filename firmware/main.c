@@ -148,11 +148,19 @@ static uint8_t eeprom_address EEMEM;
 static uint8_t my_address;
 
 static inline void
-do_pixel(uint8_t n, uint8_t val)
+set_pixel(uint8_t n, uint8_t val)
 {
   uint8_t pos;
   pos = pgm_read_byte(&pixel_map[n]);
   write_framebuffer[pos] = val;
+}
+
+static uint8_t
+get_pixel(uint8_t n)
+{
+  uint8_t pos;
+  pos = pgm_read_byte(&pixel_map[n]);
+  return write_framebuffer[pos];
 }
 
 static volatile uint8_t fb_offset;
@@ -165,22 +173,97 @@ static uint8_t dc[12];
 bool done_tick;
 
 static void
+rotate_pixel(uint8_t n)
+{
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+
+  r = get_pixel(n);
+  g = get_pixel(n + 1);
+  b = get_pixel(n + 2);
+  if (r == 0 && g != 0) {
+      set_pixel(n + 1, g - 1);
+      set_pixel(n + 2, b + 1);
+  } else if (g == 0 && b != 0) {
+      set_pixel(n + 2, b - 1);
+      set_pixel(n, r + 1);
+  } else {
+      set_pixel(n, r - 1);
+      set_pixel(n + 1, g + 1);
+  }
+}
+
+static void
+plasma_pixel_init(uint8_t x, uint8_t y, int n)
+{
+  uint8_t pos;
+  pos = (x + y * 8) * 3;
+  set_pixel(pos, 0xff);
+  while (n) {
+      rotate_pixel(pos);
+      n--;
+  }
+}
+
+static void
+plasma_init(void)
+{
+  uint8_t x;
+  uint8_t y;
+  int n;
+  for (x = 0; x < 4; x++) {
+      for (y = 0; y < 4; y++) {
+	  n = sqrt(x*x + y * y) * 100.0;
+#if 0
+	  if (x > y)
+	    n = x + y / 2;
+	  else
+	    n = y + x / 2;
+	  n *= 100;
+#endif
+	  n = 700-n;
+	  plasma_pixel_init(4 + x, 4 + y, n);
+	  plasma_pixel_init(3 - x, 4 + y, n);
+	  plasma_pixel_init(4 + x, 3 - y, n);
+	  plasma_pixel_init(3 - x, 3 - y, n);
+      }
+  }
+}
+
+static void
+demo_tick(void)
+{
+  static bool done_init;
+  int i;
+
+  if (!done_init) {
+      plasma_init();
+      done_init = true;
+  }
+  for (i = 0; i < 8*8*3; i += 3)
+    rotate_pixel(i);
+}
+
+#if 0
+static void
 demo_tick(void)
 {
   static int n;
 
   //do_pixel(4*24+0*3+1, 0x20);
 #if 1
-  do_pixel(n, 0);
+  set_pixel(n, 0);
   n += 3;
   if (n >= 8*8*3) {
       n = (n - 8*8*3) + 1;
       if (n == 3)
 	n = 0;
   }
-  do_pixel(n, 0xff);
+  set_pixel(n, 0xff);
 #endif
 }
+#endif
 
 static void
 send_data(void)
@@ -226,7 +309,7 @@ send_data(void)
 	/* no-op */;
       UDR0 = tmp;
   } else {
-      if (ticks == 0) {
+      if ((ticks & 0x3f) == 0) {
 	  if (!done_tick) {
 	      demo_tick();
 	      done_tick = true;
@@ -324,9 +407,9 @@ do_data(void)
       if (cmd < NUM_PIXELS) {
 	  if (selected) {
 	      n = cmd * 3;
-	      do_pixel(n, d0);
-	      do_pixel(n + 1, d1);
-	      do_pixel(n + 2, d2);
+	      set_pixel(n, d0);
+	      set_pixel(n + 1, d1);
+	      set_pixel(n + 2, d2);
 	  }
       } else if (cmd == 0x80) {
 	  /* Board select */
