@@ -214,13 +214,14 @@ plasma_init(void)
   int n;
   for (x = 0; x < 4; x++) {
       for (y = 0; y < 4; y++) {
-	  n = sqrt(x*x + y * y) * 100.0;
 #if 0
+	  n = sqrt(x*x + y * y) * 100.0;
+#else
 	  if (x > y)
-	    n = x + y / 2;
+	    n = x * 2 + y;
 	  else
-	    n = y + x / 2;
-	  n *= 100;
+	    n = y * 2 + x;
+	  n *= 50;
 #endif
 	  n = 700-n;
 	  plasma_pixel_init(4 + x, 4 + y, n);
@@ -241,8 +242,9 @@ demo_tick(void)
       plasma_init();
       done_init = true;
   }
-  for (i = 0; i < 8*8*3; i += 3)
-    rotate_pixel(i);
+  for (i = 0; i < 8*8*3; i += 3) {
+      rotate_pixel(i);
+  }
 }
 
 #if 0
@@ -309,7 +311,7 @@ send_data(void)
 	/* no-op */;
       UDR0 = tmp;
   } else {
-      if ((ticks & 0x3f) == 0) {
+      if ((ticks & 0x0f) == 0) {
 	  if (!done_tick) {
 	      demo_tick();
 	      done_tick = true;
