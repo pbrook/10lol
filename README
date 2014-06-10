@@ -33,24 +33,26 @@ Commands are as follows:
   d1: green
   d2: blue
 
-0x80: Board select
- Only the selected board will respond to write pixel commands.
-  d0: board address (0xff to select all boards)
-  d1: Unused (0)
-  d2: Unused (0)
-
-0x81: Page flip
+0x80: Page flip
  Set the framebuffer page for both display and pixel writing.
  This allows double buffered updates
-  d0: board address (0xff for all baords)
+  d0: Unused(0)
   d1: display page number
   d2: pixel write page number
 
-0x82: Set brightness
- Sets brightness/color ballance of selected board
+0xc0: Set brightness
+ Sets brightness/color ballance of selected board (stored in EEPROM)
   d0: Red brightness
   d1: Green brightness
   d2: Blue brightness
+
+0xd0: Set board address
+ Modifies the board address (stored in EEPROM).
+ The board will only respond to this address if the SDA pin is pulled low.
+ This allows the addresses to be set without disconnecting the board.
+  d0: 0xf5
+  d1: 0xf0 + high address nibble
+  d2: 0xf0 + low address nibble
 
 0xe0: Connect
  Prepares the board for other commands
@@ -58,25 +60,11 @@ Commands are as follows:
   d1: 0xf1
   d2: 0xf2
 
-0xe1: Set board address
- Modifies the board address (stored on on-chip EEPROM).
- The board will only respond to this address if the SDA pin is pulled low.
- This allows the addresses to be set without disconnecting the board.
- This command must be sent twice, with a connect command in between.
- First command:
-  d0: 0xf5
-  d1: 0xf0 + high address nibble
-  d2: 0xf0 + low address nibble
- Second command:
-  d0: 0xfa
-  d1: 0xf0 + inverted high address nibble
-  d2: 0xf0 + inverted low address nibble
- e.g. The full sequence for setting the board address to 41 (0x29) is:
-  0xff 0xff 0xff 0xff
-  0xe0 0xf0 0xf1 0xf2
-  0xe1 0xf5 0xf2 0xf9
-  0xe0 0xf0 0xf1 0xf2
-  0xe1 0xfa 0xfd 0xf6
+0xe1: Board select
+ Only the selected board will respond to most commands.
+  d0: board address (0xff to select all boards)
+  d1: Unused (0)
+  d2: Unused (0)
 
 0xff: Disconnect
  Reset serial interface.

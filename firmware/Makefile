@@ -1,6 +1,6 @@
 BOARD=board.map
 
-OBJS=main.o
+OBJS=main.o ../../forth/forth.o
 
 
 CPU=atmega328p
@@ -16,10 +16,11 @@ ELF=image.elf
 CC=avr-gcc
 LD=$(CC)
 SIZE=avr-size
-CFLAGS=-mmcu=$(CPU) -g -O2 -Wall -save-temps -fdata-sections
+CFLAGS=-mmcu=$(CPU) -g -Os -Wall -save-temps -fdata-sections
 LDFLAGS=$(CFLAGS) -Wl,--gc-sections 
 LIBS=-lc -lm
 OBJCOPY=avr-objcopy
+INCLUDES=-I../../forth
 
 .PHONY: all
 
@@ -47,7 +48,7 @@ $(ELF): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) -Wl,-Map,image.map
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) $(INCLUDES) -o $@ $<
 
 %.hex: %.elf
 	$(OBJCOPY) -O ihex -R .eeprom $< $@

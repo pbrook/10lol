@@ -10,6 +10,7 @@
 #include <avr/eeprom.h>
 #include <util/delay.h>
 #include <stdbool.h>
+#include <forth.h>
 
 #define FIFO_SIZE 64
 
@@ -144,6 +145,9 @@ disable_gsclk(void)
 }
 
 static uint8_t eeprom_address EEMEM;
+static uint8_t eeprom_dc_r EEMEM;
+static uint8_t eeprom_dc_g EEMEM;
+static uint8_t eeprom_dc_b EEMEM;
 
 static uint8_t my_address;
 
@@ -170,102 +174,56 @@ static volatile bool dc_changed;
 
 static uint8_t dc[12];
 
-bool done_tick;
-
+/* Forth support:  */
 static void
-rotate_pixel(uint8_t n)
+f_set_pixel(void)
 {
-  uint8_t r;
-  uint8_t g;
-  uint8_t b;
-
-  r = get_pixel(n);
-  g = get_pixel(n + 1);
-  b = get_pixel(n + 2);
-  if (r == 0 && g != 0) {
-      set_pixel(n + 1, g - 1);
-      set_pixel(n + 2, b + 1);
-  } else if (g == 0 && b != 0) {
-      set_pixel(n + 2, b - 1);
-      set_pixel(n, r + 1);
-  } else {
-      set_pixel(n, r - 1);
-      set_pixel(n + 1, g + 1);
-  }
+  cell pos = F_POP();
+  cell color = F_POP();
+  if (pos >= 64 * 3)
+    return;
+  set_pixel(pos, color);
 }
 
 static void
-plasma_pixel_init(uint8_t x, uint8_t y, int n)
+f_get_pixel(void)
 {
-  uint8_t pos;
-  pos = (x + y * 8) * 3;
-  set_pixel(pos, 0xff);
-  while (n) {
-      rotate_pixel(pos);
-      n--;
-  }
+  cell pos = F_POP();
+  cell color;
+  if (pos >= 64 * 3)
+    color = 0;
+  else
+    color = get_pixel(pos);
+  F_PUSH(color);
 }
+
+static cell tick;
 
 static void
-plasma_init(void)
+set_tick(void)
 {
-  uint8_t x;
-  uint8_t y;
-  int n;
-  for (x = 0; x < 4; x++) {
-      for (y = 0; y < 4; y++) {
-#if 0
-	  n = sqrt(x*x + y * y) * 100.0;
-#else
-	  if (x > y)
-	    n = x * 2 + y;
-	  else
-	    n = y * 2 + x;
-	  n *= 50;
-#endif
-	  n = 700-n;
-	  plasma_pixel_init(4 + x, 4 + y, n);
-	  plasma_pixel_init(3 - x, 4 + y, n);
-	  plasma_pixel_init(4 + x, 3 - y, n);
-	  plasma_pixel_init(3 - x, 3 - y, n);
-      }
-  }
+  tick = F_POP();
 }
 
-static void
-demo_tick(void)
-{
-  static bool done_init;
-  int i;
+#define APP_WORDS W("pixel!", f_set_pixel) W("pixel@", f_get_pixel) W("set-tick", set_tick)
+#include <forth-words.h>
 
-  if (!done_init) {
-      plasma_init();
-      done_init = true;
-  }
-  for (i = 0; i < 8*8*3; i += 3) {
-      rotate_pixel(i);
-  }
+// Return next character, or -1 if no characters avaialble
+int
+f_getchar(void)
+{
+  return -1;
 }
 
-#if 0
-static void
-demo_tick(void)
+void f_putchar(char c)
 {
-  static int n;
-
-  //do_pixel(4*24+0*3+1, 0x20);
-#if 1
-  set_pixel(n, 0);
-  n += 3;
-  if (n >= 8*8*3) {
-      n = (n - 8*8*3) + 1;
-      if (n == 3)
-	n = 0;
-  }
-  set_pixel(n, 0xff);
-#endif
 }
-#endif
+
+void
+f_bye(void)
+{
+}
+
 
 static void
 send_data(void)
@@ -310,15 +268,6 @@ send_data(void)
       while ((UCSR0A & _BV(UDRE0)) == 0)
 	/* no-op */;
       UDR0 = tmp;
-  } else {
-      if ((ticks & 0x0f) == 0) {
-	  if (!done_tick) {
-	      demo_tick();
-	      done_tick = true;
-	  }
-      } else {
-	done_tick = false;
-      }
   }
 }
 
@@ -334,6 +283,9 @@ set_address(uint8_t address)
 static void
 set_dc(uint8_t red, uint8_t green, uint8_t blue)
 {
+  eeprom_update_byte(&eeprom_dc_r, red);
+  eeprom_update_byte(&eeprom_dc_g, green);
+  eeprom_update_byte(&eeprom_dc_b, blue);
   /* Dot correction data is only 6 bits.  */
   red >>= 2;
   green >>= 2;
@@ -354,6 +306,13 @@ set_dc(uint8_t red, uint8_t green, uint8_t blue)
   dc_changed = true;
 }
 
+enum
+{
+  SM_IDLE,
+  SM_READY,
+  SM_ACTIVE,
+};
+
 static void
 do_data(void)
 {
@@ -362,28 +321,24 @@ do_data(void)
   uint8_t d0;
   uint8_t d1;
   uint8_t d2;
-  uint8_t new_address;
-  uint8_t latched_address;
-  bool active;
   uint8_t fifo_tail;
-  bool selected;
+  uint8_t sm;
 
   fifo_tail = 0;
-  active = false;
   while (true) {
+      send_data();
       n = (fifo_head - fifo_tail) & FIFO_MASK;
       if (n < 4) {
-	  send_data();
 	  continue;
-      }
-      if (!active) {
-	selected = false;
-	latched_address = 0xff;
       }
       cmd = fifo[fifo_tail];
       fifo_tail = (fifo_tail + 1) & FIFO_MASK;
-      if (cmd == 0xff) {
-	  active = false;
+      if (cmd >= 0xf0) {
+	  sm = SM_IDLE;
+	  continue;
+      }
+      if (cmd < 0xd0 && sm != SM_ACTIVE) {
+	  fifo_tail = (fifo_tail + 3) & FIFO_MASK;
 	  continue;
       }
       d0 = fifo[fifo_tail];
@@ -392,67 +347,84 @@ do_data(void)
       fifo_tail = (fifo_tail + 1) & FIFO_MASK;
       d2 = fifo[fifo_tail];
       fifo_tail = (fifo_tail + 1) & FIFO_MASK;
+
       if (cmd == 0xe0) {
-	  // Initialize
-	  if (d0 == 0xf0 && d1 == 0xf1 && d2 == 0xf2) {
-	      latched_address = new_address;
-	      active = true;
-	  } else {
-	      active = false;
-	  }
-	  continue;
-      }
-      new_address = 0xff;
-      if (!active) {
-	  continue;
-      }
-      if (cmd < NUM_PIXELS) {
-	  if (selected) {
-	      n = cmd * 3;
-	      set_pixel(n, d0);
-	      set_pixel(n + 1, d1);
-	      set_pixel(n + 2, d2);
-	  }
-      } else if (cmd == 0x80) {
-	  /* Board select */
-	  if (d0 == my_address || d0 == 0xff)
-	    selected = true;
+	  if (d0 == 0xf0 && d1 == 0xf1 && d2 == 0xf2)
+	    sm = SM_READY;
 	  else
-	    selected = false;
-      } else if (cmd == 0x81) {
+	    sm = SM_IDLE;
+	  continue;
+      }
+      if (sm == SM_IDLE)
+	continue;
+      if (cmd < NUM_PIXELS) {
+	  n = cmd * 3;
+	  set_pixel(n, d0);
+	  set_pixel(n + 1, d1);
+	  set_pixel(n + 2, d2);
+      } else if (cmd == 0x80) {
 	  /* Set framebuffer (page flip).  */
-	  if (d0 == my_address || d0 == 0xff) {
-	      display_frame = d1 % NUM_FRAMES;
-	      write_frame = d2 % NUM_FRAMES;
-	      write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
-	  }
-      } else if (cmd == 0x82) {
+	  display_frame = d1 % NUM_FRAMES;
+	  write_frame = d2 % NUM_FRAMES;
+	  write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
+      } else if (cmd == 0xc0) {
 	  /* Set brightness */
-	  if (selected) {
-	      set_dc(d0, d1, d2);
+	  set_dc(d0, d1, d2);
+      } else if (cmd == 0xd0) {
+	  /* Set address.  */
+	  if (d0 == 0xf5 && d1 >= 0xf0 && d2 >= 0xf0) {
+	      uint8_t new_address;
+	      new_address = (d1 << 4) | (d2 & 0x0f);
+	      set_address(new_address);
 	  }
       } else if (cmd == 0xe1) {
-	  /* Set address.  */
-	  if ((d0 == 0xf5 || d0 == 0xfa) && d1 >= 0xf0 && d2 >= 0xf0) {
-	      new_address = (d1 << 4) | (d2 & 0x0f);
-	      if (cmd == 0xfa && ~new_address == latched_address) {
-		  set_address(latched_address);
-		  new_address = 0xff;
-	      }
-	  }
-	  active = false;
+	  if (d0 == my_address)
+	    sm = SM_ACTIVE;
+	  else
+	    sm = SM_READY;
       } else {
 	  /* Unknown command.  */
-	  active = false;
       }
   }
 }
 
+#ifdef __AVR_ATmega328P__
+ISR(SPI_STC_vect, ISR_NAKED)
+{
+  asm (
+"\n push r28"
+"\n push r29"
+"\n push r30"
+"\n push r31"
+"\n in r28, __SREG__"
+"\n lds r30, fifo_head"
+"\n1:"
+"\n ldi r31, 0"
+"\n in r29, 0x2e" // SPDR
+"\n subi r30,lo8(-(fifo))"
+"\n sbci r31,hi8(-(fifo))"
+"\n st Z+,r29"
+"\n subi r30,lo8(fifo)"
+"\n andi r30, lo8(63)" // FIFO_MASK
+"\n in r29, 0x2d" // SPSR
+"\n sbrc r29, 7" // SPIF
+"\n rjmp 1b"
+"\n sts fifo_head, r29"
+"\n out __SREG__, r28"
+"\n pop r31"
+"\n pop r30"
+"\n pop r29"
+"\n pop r28"
+"\n reti" // Total 44 cycles
+      );
+}
+#else
 ISR(SPI_STC_vect)
 {
   fifo[fifo_head] = SPDR;
   fifo_head = (fifo_head + 1) & FIFO_MASK;
 }
+#endif
 
 ISR(TIMER1_COMPA_vect)
 {
@@ -516,9 +488,24 @@ init_5940(void)
 static void
 init_eeprom()
 {
-  my_address = eeprom_read_byte(&eeprom_address);
-  if (my_address == 0xff)
-    my_address = 0;
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+  uint8_t address;
+
+  address = eeprom_read_byte(&eeprom_address);
+  if (address == 0xff) {
+      address = 0;
+      r = 0x40;
+      g = 0x80;
+      b = 0x60;
+  } else {
+      r = eeprom_read_byte(&eeprom_dc_r);
+      g = eeprom_read_byte(&eeprom_dc_g);
+      b = eeprom_read_byte(&eeprom_dc_b);
+  }
+  set_address(address);
+  set_dc(r, g, b);
 }
 
 static void
@@ -541,8 +528,6 @@ main()
   sending_frame = false;
   write_framebuffer = &framebuffer[0];
   display_framebuffer = &framebuffer[0];
-
-  set_dc(0x40,0x80,0x60);
 
   init_eeprom();
   init_unused();
