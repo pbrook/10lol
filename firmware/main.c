@@ -14,7 +14,7 @@
 
 #define FIFO_SIZE 64
 
-#define NUM_FRAMES 2
+#define NUM_FRAMES 6
 
 #define NUM_PIXELS (8*8*3)
 
@@ -174,6 +174,23 @@ static volatile bool dc_changed;
 
 static uint8_t dc[12];
 
+void
+dump_val(uint8_t val)
+{
+  static uint8_t pos;
+  uint8_t mask;
+
+  mask = 0x80;
+  while (mask) {
+      if (mask & val)
+	set_pixel(pos, 0xff);
+      pos += 3;
+      mask >>= 1;
+  }
+  if (pos >= 64 * 3)
+    pos = 0;
+}
+
 /* Forth support:  */
 static void
 f_set_pixel(void)
@@ -224,7 +241,6 @@ f_bye(void)
 {
 }
 
-
 static void
 send_data(void)
 {
@@ -268,6 +284,8 @@ send_data(void)
       while ((UCSR0A & _BV(UDRE0)) == 0)
 	/* no-op */;
       UDR0 = tmp;
+  } else {
+      go_forth();
   }
 }
 
@@ -357,16 +375,27 @@ do_data(void)
       }
       if (sm == SM_IDLE)
 	continue;
-      if (cmd < NUM_PIXELS) {
+      if (cmd < 8 * 8) {
 	  n = cmd * 3;
 	  set_pixel(n, d0);
 	  set_pixel(n + 1, d1);
 	  set_pixel(n + 2, d2);
-      } else if (cmd == 0x80) {
+      } else if (cmd == 0x80u) {
 	  /* Set framebuffer (page flip).  */
 	  display_frame = d1 % NUM_FRAMES;
 	  write_frame = d2 % NUM_FRAMES;
 	  write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
+      } else if (cmd == 0xa0) {
+	  /* Initialize FORTH */
+	  init_forth((void *)&framebuffer[16 * 16 * (NUM_FRAMES - d1)], d1 * 16 * 16, d0);
+      } else if (cmd == 0xa1) {
+	  /* FORTH source */
+	  if (d0)
+	    f_pushchar(d0);
+	  if (d1)
+	    f_pushchar(d1);
+	  if (d2)
+	    f_pushchar(d2);
       } else if (cmd == 0xc0) {
 	  /* Set brightness */
 	  set_dc(d0, d1, d2);
@@ -388,7 +417,7 @@ do_data(void)
   }
 }
 
-#ifdef __AVR_ATmega328P__
+#ifdef __AVR_ATmega328P__X
 ISR(SPI_STC_vect, ISR_NAKED)
 {
   asm (

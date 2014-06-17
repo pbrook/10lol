@@ -23,7 +23,12 @@ bytes of argument data (d0-d2).
 
 On power-up the board will be in disconnected state.  A disconnect command
 followed by a connect command should be used to ensure the serial interface
-is in a coherent state.
+is coherent, and the board is in the ready state.
+
+Command 0xe1 puts the specified board into the active state (other
+previously active boards return to the ready state).
+
+Commands <0xd0 are ignored when the board is not active.
 
 Commands are as follows:
 
@@ -40,8 +45,21 @@ Commands are as follows:
   d1: display page number
   d2: pixel write page number
 
+0xa0: Initialize FORTH
+ Initialize and enable the FORTH interpreter.
+ The forth dictionary is stored at the end of the framebuffer.
+  d0: rstack size (cells)
+  d1: Dictionary size (in 256-byte framebuffer pages)
+  d2: Unused (0)
+
+0xa1: FORTH source
+ Send one to three bytes of FORTH source code.  Null (0) characters are ignored.
+  d0: First character
+  d1: Second character
+  d2: Third character
+
 0xc0: Set brightness
- Sets brightness/color ballance of selected board (stored in EEPROM)
+ Sets brightness/color ballance (stored in EEPROM)
   d0: Red brightness
   d1: Green brightness
   d2: Blue brightness
