@@ -30,6 +30,8 @@ volatile uint8_t next_anode;
 
 volatile uint8_t ticks;
 
+static bool address_latch;
+
 #define FIFO_MASK (FIFO_SIZE - 1)
 #if (FIFO_SIZE & FIFO_MASK) != 0
 #error
@@ -294,6 +296,8 @@ set_address(uint8_t address)
 {
   if (address == 0xff)
     return;
+  if (address_latch && (PINC & _BV(4)) != 0)
+    return;
   my_address = address;
   eeprom_update_byte(&eeprom_address, address);
 }
@@ -407,7 +411,8 @@ do_data(void)
 	      set_address(new_address);
 	  }
       } else if (cmd == 0xe1) {
-	  if (d0 == my_address)
+	  address_latch = true;
+	  if (d0 == my_address || d0 == 0xff)
 	    sm = SM_ACTIVE;
 	  else
 	    sm = SM_READY;
@@ -525,9 +530,9 @@ init_eeprom()
   address = eeprom_read_byte(&eeprom_address);
   if (address == 0xff) {
       address = 0;
-      r = 0x40;
-      g = 0x80;
-      b = 0x60;
+      r = 0x30;
+      g = 0x45;
+      b = 0x40;
   } else {
       r = eeprom_read_byte(&eeprom_dc_r);
       g = eeprom_read_byte(&eeprom_dc_g);
