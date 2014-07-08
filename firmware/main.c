@@ -346,11 +346,12 @@ do_data(void)
   uint8_t fifo_tail;
   uint8_t sm;
 
+  sm = SM_IDLE;
   fifo_tail = 0;
   while (true) {
-      send_data();
       n = (fifo_head - fifo_tail) & FIFO_MASK;
       if (n < 4) {
+	  send_data();
 	  continue;
       }
       cmd = fifo[fifo_tail];
@@ -418,6 +419,7 @@ do_data(void)
 	    sm = SM_READY;
       } else {
 	  /* Unknown command.  */
+	    sm = SM_IDLE;
       }
   }
 }
