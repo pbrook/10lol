@@ -59,13 +59,17 @@ const uint8_t pixel_map[NUM_PIXELS] PROGMEM = {
 #include "board.h"
 };
 
-// enable pullups on unused pins
 static void
 init_unused(void)
 {
+  // Enable pullups on unused pins
   // Not connected
   PORTB |= _BV(1);
   PORTD |= _BV(2);
+
+  // Turn of unused peripherals
+  PRR = _BV(PRTWI) | _BV(PRTIM2) | _BV(PRADC);
+  ACSR = _BV(ACD);
 }
 
 static void
