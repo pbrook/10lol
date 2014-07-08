@@ -465,13 +465,16 @@ ISR(SPI_STC_vect)
 ISR(TIMER1_COMPA_vect)
 {
   static uint8_t overload;
+  uint8_t prev_anode;
   ticks++;
   // Enable interrupts so we are not blocking the SPI slave interrupt.
   // The clock period is long enough that we don't have to worry about
   // nested timer interrupts
   sei();
-  if (sending_frame)
-    overload = 0xff;
+  if (sending_frame) {
+      overload = 0xff;
+      next_anode = 0xff;
+  }
 
   disable_gsclk();
   SET_BLANK();
@@ -479,31 +482,36 @@ ISR(TIMER1_COMPA_vect)
       overload--;
       return;
   }
-  if (next_anode != 0xff && !overload) {
+  prev_anode = next_anode;
+  next_anode = (next_anode + 1) & 0xf;
+  if (prev_anode < 16) {
+      // Select the next anode
+      // The 8 outputs of each decoder are connected in reverse order
+      PORTC = (PORTC & ~0xf) | (prev_anode ^ 7);
       // Latch data into the register
       SET_XLAT();
       CLEAR_XLAT();
-      // Select the next anode
-      // The 8 outputs of each decoder are connected in reverse order
-      PORTC = (PORTC & ~0xf) | (next_anode ^ 7);
-      // Delay a few us for everything to settle.
-      _delay_us(5);
   }
-  next_anode = (next_anode + 1) & 0xf;
-  // Shift in the next set of anode data
-  fb_offset = next_anode * 16;
-  sending_frame = true;
-  // And dot correction data if needed
-  if (dc_changed) {
-      dc_bytes = 12;
-      SET_VPRG();
-      dc_changed = false;
+  // Delay a few us for everything to settle.
+  _delay_us(5);
+  if (next_anode < 16) {
+      // Shift in the next set of anode data
+      fb_offset = next_anode * 16;
+      sending_frame = true;
+      // And dot correction data if needed
+      if (dc_changed) {
+	  dc_bytes = 12;
+	  SET_VPRG();
+	  dc_changed = false;
+      }
   }
-  // Triggering the greyscale clock is timing critical, so disable interrupts
-  cli();
-  // Trigger the output pulse
-  CLEAR_BLANK();
-  enable_gsclk();
+  if (prev_anode < 16) {
+      // Triggering the greyscale clock is timing critical, so disable interrupts
+      cli();
+      // Trigger the output pulse
+      CLEAR_BLANK();
+      enable_gsclk();
+  }
 }
 
 static void
