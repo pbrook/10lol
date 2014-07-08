@@ -43,6 +43,9 @@ volatile uint8_t fifo[FIFO_SIZE];
 volatile uint8_t fifo_head;
 static uint8_t fifo_tail;
 
+// Keep track of whether we have any nonzero pixels
+volatile uint8_t data_active;
+
 #define SET_XLAT() PORTD |= _BV(5)
 #define CLEAR_XLAT() PORTD &= ~_BV(5)
 
@@ -300,12 +303,14 @@ send_data(void)
       // double buffering means we probably only stall for 16 cycles and it is
       // not worth trying to be clever.
       tmp = display_framebuffer[fb_offset++];
+      data_active |= tmp;
       UDR0 = tmp >> 4;
       tmp <<= 4;
       while ((UCSR0A & _BV(UDRE0)) == 0)
 	/* no-op */;
       UDR0 = tmp;
       tmp = display_framebuffer[fb_offset++];
+      data_active |= tmp;
       if ((fb_offset & 0xf) == 0) {
 	  _delay_us(2);
 	  sending_frame = false;
@@ -401,6 +406,7 @@ do_data(void)
       fifo_tail = (fifo_tail + 1) & FIFO_MASK;
       d2 = fifo[fifo_tail];
       fifo_tail = (fifo_tail + 1) & FIFO_MASK;
+      data_active = 0xff;
 
       if (cmd == 0xe0) {
 	  if (d0 == 0xf0 && d1 == 0xf1 && d2 == 0xf2)
@@ -517,8 +523,18 @@ ISR(TIMER1_COMPA_vect)
   }
   prev_anode = next_anode;
   next_anode = (next_anode + 1) & 0xf;
+
+  if (next_anode == 0) {
+      // If we have a completely blank screen, then don't bother driving it.
+      if (data_active == 0) {
+	  next_anode = 0xff;
+	  return;
+      }
+      data_active = 0;
+  }
+
   if (prev_anode < 16) {
-      // Select the next anode
+      // Select the active anode
       // The 8 outputs of each decoder are connected in reverse order
       PORTC = (PORTC & ~0xf) | (prev_anode ^ 7);
       // Latch data into the register
@@ -527,6 +543,7 @@ ISR(TIMER1_COMPA_vect)
   }
   // Delay a few us for everything to settle.
   _delay_us(5);
+
   if (next_anode < 16) {
       // Shift in the next set of anode data
       fb_offset = next_anode * 16;
@@ -602,6 +619,7 @@ main()
 
   fifo_head = 0;
   next_anode = 0xff;
+  data_active = 0xff;
   sending_frame = false;
   write_framebuffer = &framebuffer[0];
   display_framebuffer = &framebuffer[0];
