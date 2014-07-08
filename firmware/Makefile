@@ -1,6 +1,7 @@
 BOARD=board.map
 
-OBJS=main.o ../../forth/forth.o
+OBJS=main.o
+#OBJS += ../../forth/forth.o
 
 
 CPU=atmega328p
@@ -20,7 +21,8 @@ CFLAGS=-mmcu=$(CPU) -g -Os -Wall -save-temps -fdata-sections
 LDFLAGS=$(CFLAGS) -Wl,--gc-sections 
 LIBS=-lc -lm
 OBJCOPY=avr-objcopy
-INCLUDES=-I../../forth
+INCLUDES=
+#INCLUDES=-I../../forth
 
 .PHONY: all
 

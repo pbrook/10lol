@@ -10,7 +10,9 @@
 #include <avr/eeprom.h>
 #include <util/delay.h>
 #include <stdbool.h>
+#ifdef ENABLE_FORTH
 #include <forth.h>
+#endif
 
 #define FIFO_SIZE 64
 
@@ -39,6 +41,7 @@ static bool address_latch;
 volatile uint8_t fifo[FIFO_SIZE];
 
 volatile uint8_t fifo_head;
+static uint8_t fifo_tail;
 
 #define SET_XLAT() PORTD |= _BV(5)
 #define CLEAR_XLAT() PORTD &= ~_BV(5)
@@ -165,6 +168,7 @@ set_pixel(uint8_t n, uint8_t val)
   write_framebuffer[pos] = val;
 }
 
+#ifdef ENABLE_FORTH
 static uint8_t
 get_pixel(uint8_t n)
 {
@@ -172,6 +176,7 @@ get_pixel(uint8_t n)
   pos = pgm_read_byte(&pixel_map[n]);
   return write_framebuffer[pos];
 }
+#endif
 
 static volatile uint8_t fb_offset;
 static volatile bool sending_frame;
@@ -180,6 +185,7 @@ static volatile bool dc_changed;
 
 static uint8_t dc[12];
 
+#ifdef ENABLE_FORTH
 void
 dump_val(uint8_t val)
 {
@@ -246,6 +252,24 @@ void
 f_bye(void)
 {
 }
+#endif
+
+static void
+maybe_suspend(void)
+{
+  uint8_t n;
+  cli();
+  n = (fifo_head - fifo_tail) & FIFO_MASK;
+  if (n < 4) {
+      sleep_enable();
+      set_sleep_mode(SLEEP_MODE_IDLE);
+      sei();
+      sleep_cpu();
+      sleep_disable();
+
+  }
+  sei();
+}
 
 static void
 send_data(void)
@@ -291,7 +315,11 @@ send_data(void)
 	/* no-op */;
       UDR0 = tmp;
   } else {
+#ifdef ENABLE_FORTH
       go_forth();
+#else
+      maybe_suspend();
+#endif
   }
 }
 
@@ -347,7 +375,6 @@ do_data(void)
   uint8_t d0;
   uint8_t d1;
   uint8_t d2;
-  uint8_t fifo_tail;
   uint8_t sm;
 
   sm = SM_IDLE;
@@ -394,6 +421,7 @@ do_data(void)
 	  display_frame = d1 % NUM_FRAMES;
 	  write_frame = d2 % NUM_FRAMES;
 	  write_framebuffer = &framebuffer[(uint16_t)write_frame * 16 * 16];
+#ifdef ENABLE_FORTH
       } else if (cmd == 0xa0) {
 	  /* Initialize FORTH */
 	  init_forth((void *)&framebuffer[16 * 16 * (NUM_FRAMES - d1)], d1 * 16 * 16, d0);
@@ -405,6 +433,7 @@ do_data(void)
 	    f_pushchar(d1);
 	  if (d2)
 	    f_pushchar(d2);
+#endif
       } else if (cmd == 0xc0) {
 	  /* Set brightness */
 	  set_dc(d0, d1, d2);
