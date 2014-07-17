@@ -263,7 +263,7 @@ maybe_suspend(void)
   uint8_t n;
   cli();
   n = (fifo_head - fifo_tail) & FIFO_MASK;
-  if (n < 4) {
+  if (n < 4 && !sending_frame) {
       sleep_enable();
       set_sleep_mode(SLEEP_MODE_IDLE);
       sei();
