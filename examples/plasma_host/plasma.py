@@ -48,12 +48,16 @@ class plasma(object):
 
 p = plasma()
 tick = time.time()
-while True:
-    for n in range(0, 255):
-        p.frame(n)
-        now = time.time()
-        if now < tick:
-            time.sleep(tick - now)
-        else:
-            print("Frameskip")
-        tick += 5.0/256
+try:
+    while True:
+        for n in range(0, 255):
+            p.frame(n)
+            now = time.time()
+            if now < tick:
+                time.sleep(tick - now)
+            else:
+                print("Frameskip")
+            tick += 5.0/256
+except KeyboardInterrupt:
+    print("Hello")
+    p.m.clear()
