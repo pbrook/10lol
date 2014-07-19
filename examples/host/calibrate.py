@@ -59,6 +59,8 @@ def main(stdscr):
                 set_all(0xff, (0x00, 0xff, 0x00))
             elif key == 'b':
                 set_all(0xff, (0x00, 0x00, 0xff))
+            elif key == 'w':
+                set_all(0xff, (0xff, 0xff, 0xff))
             else:
                 set_all(0xff, (0x00, 0x00, 0x00))
             n = 0
