@@ -1,18 +1,61 @@
 #! /usr/bin/env python3
 
-import serial
+import os
+
+port_list = ['/dev/ttyACM0', '/dev/spidev1.0']
+
+def SerialWriter(port):
+    import serial
+    return serial.Serial(port, 115200)
+
+class SPIWriter(object):
+    def __init__(self, port):
+        import spidev
+        if port[:11] == '/dev/spidev':
+            port = port[11:]
+        bus = None
+        for sep in '.,:-':
+            if sep in port:
+                p = port.split(sep)
+                bus = int(p[0])
+                dev = int(p[1])
+                break
+        if bus is None:
+            if port == '':
+                bus = 1
+            else:
+                bus = int(port)
+            dev = 0
+        spi = spidev.SpiDev(bus, dev)
+        spi.max_speed_hz = 2000000
+        spi.mode = 3
+        spi.lsbfirst = False
+        spi.cshigh = False
+        spi.bits_per_word = 8
+        self.spi = spi
+    def write(self, b):
+        self.spi.writebytes(b)
+
+def find_port(l):
+    for p in l:
+        if os.access(p, os.R_OK | os.W_OK):
+            return p
+    raise Exception("Unable to find suitable port")
 
 class BoardMatrix(object):
     def __init__(self, port, xy):
-        self.ser = serial.Serial(port, 115200)
+        if port is None:
+            port = find_port(port_list)
+        if 'spi' in port:
+            self.ser = SPIWriter(port)
+        else:
+            self.er = SerialWriter(port)
         self.current_board = None
         self.board_x = xy[0]
         self.board_y = xy[1]
 
     def do_cmd(self, cmd, d0, d1, d2):
-        n = self.ser.write(bytes((cmd, d0, d1, d2)))
-        if n != 4:
-            raise Exception("only worte %d" % n)
+        self.ser.write(bytearray((cmd, d0, d1, d2)))
 
     def bus_reset(self):
         self.do_cmd(0xff, 0xff, 0xff, 0xff)

@@ -34,7 +34,7 @@ def pixel_value(x, y):
 
 class plasma(object):
     def __init__(self):
-        self.m = BoardMatrix("/dev/ttyACM0", (board_x, board_y))
+        self.m = BoardMatrix(None, (board_x, board_y))
         self.m.set_brightness((0x30, 0x45, 0x40))
         #self.m.set_brightness((0x08, 0x04, 0x04))
 
@@ -59,5 +59,4 @@ try:
                 print("Frameskip")
             tick += 5.0/256
 except KeyboardInterrupt:
-    print("Hello")
     p.m.clear()

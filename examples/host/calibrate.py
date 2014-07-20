@@ -1,10 +1,10 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 from boardmatrix import BoardMatrix
 import curses
 import time
 
-m = BoardMatrix("/dev/ttyACM0", (1,1))
+m = BoardMatrix(None, (1,1))
 
 def set_all(board, rgb):
     m.select_board(board)
