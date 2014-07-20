@@ -215,6 +215,7 @@ f_set_pixel(void)
   if (pos >= 64 * 3)
     return;
   set_pixel(pos, color);
+  data_active = 0xff;
 }
 
 static void
@@ -321,10 +322,9 @@ send_data(void)
       UDR0 = tmp;
   } else {
 #ifdef ENABLE_FORTH
-      go_forth();
-#else
-      maybe_suspend();
+      if (go_forth())
 #endif
+	maybe_suspend();
   }
 }
 
