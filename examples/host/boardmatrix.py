@@ -49,7 +49,7 @@ class BoardMatrix(object):
         if 'spi' in port:
             self.ser = SPIWriter(port)
         else:
-            self.er = SerialWriter(port)
+            self.ser = SerialWriter(port)
         self.current_board = None
         self.board_x = xy[0]
         self.board_y = xy[1]
