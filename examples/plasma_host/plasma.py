@@ -1,8 +1,7 @@
 #! /usr/bin/env python3
 
 from boardmatrix import BoardMatrix
-from numpy import *
-from math import pi
+import math
 import time
 
 board_x = 6
@@ -23,20 +22,24 @@ def color_from_val(val):
         r = 0;
     return (r, g, b)
 
+scale = (math.pi / 8.0) * (8/6.0)
 def pixel_value(x, y):
-  xf = ((x + 0.0) * (pi / 8.0)) * (8/6.0);
-  yf = ((y + 0.0) * (pi / 8.0)) * (8/6.0);
+  xf = (x + 0.0) * scale
+  yf = (y + 0.0) * scale
 
-  u = cos(xf) + 1.0;
-  v = cos(yf) + 1.0;
+  u = math.cos(xf) + 1.0;
+  v = math.cos(yf) + 1.0;
   return int((u + v) * 255.9/4.0)
-    
 
 class plasma(object):
     def __init__(self):
         self.m = BoardMatrix(None, (board_x, board_y))
         self.m.set_brightness((0x30, 0x45, 0x40))
         #self.m.set_brightness((0x08, 0x04, 0x04))
+        self.init_pixels()
+
+    def init_pixels(self):
+        pass
 
     def frame(self, n):
         for x in range(0, 8*board_x):
@@ -48,15 +51,19 @@ class plasma(object):
 
 p = plasma()
 tick = time.time()
+n = 0.0
+minframe = 1.0/20
 try:
     while True:
-        for n in range(0, 255):
-            p.frame(n)
-            now = time.time()
-            if now < tick:
-                time.sleep(tick - now)
-            else:
-                print("Frameskip")
-            tick += 5.0/256
+        if n >= 256:
+            n -= 256
+        p.frame(int(n))
+        now = time.time()
+        delta = now - tick
+        #print(1.0/delta)
+        n += delta * 256 / 5.0
+        if delta < minframe:
+            time.sleep(minframe - delta)
+        tick = now
 except KeyboardInterrupt:
     p.m.clear()
