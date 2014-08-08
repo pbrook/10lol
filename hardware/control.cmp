@@ -1,10 +1,10 @@
-Cmp-Mod V01 Created by PcbNew date = Tue 13 May 2014 01:57:06 BST
+Cmp-Mod V01 Created by PcbNew date = Fri 08 Aug 2014 13:52:27 BST
 
 BeginCmp
 TimeStamp = /5353E35D;
 Reference = C1;
 ValeurCmp = 2200u;
-IdModule  = C2V10;
+IdModule  = CPR10X20;
 EndCmp
 
 BeginCmp
@@ -74,7 +74,7 @@ BeginCmp
 TimeStamp = /5353D7A3;
 Reference = L1;
 ValeurCmp = 39uH;
-IdModule  = INDUCTOR_TORROID;
+IdModule  = self_cms_we-tpc_XL;
 EndCmp
 
 BeginCmp
